@@ -3,10 +3,11 @@ package com.bitwarden.passwordless;
 import com.bitwarden.passwordless.error.PasswordlessApiException;
 import com.bitwarden.passwordless.model.*;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
-public interface PasswordlessClient {
+public interface PasswordlessClient extends Closeable {
 
     void createAlias(AliasPayload aliasPayload)
             throws PasswordlessApiException, IOException;

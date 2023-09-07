@@ -4,8 +4,9 @@ package com.bitwarden.passwordless.error;
 import lombok.*;
 
 @Value
-//@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-//@RequiredArgsConstructor
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Builder
 public class PasswordlessProblemDetails {
 //    @NotBlank
     String type;
