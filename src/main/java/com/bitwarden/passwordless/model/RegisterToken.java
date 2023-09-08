@@ -1,11 +1,14 @@
 package com.bitwarden.passwordless.model;
 
-import lombok.Value;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
 
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Builder
 public class RegisterToken {
     String userId;
     String displayName;

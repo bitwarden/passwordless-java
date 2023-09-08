@@ -106,7 +106,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
         }
 
         requestBuilder.setUri(uri);
-        requestBuilder.addHeader("ApiSecret", passwordlessOptions.getApiSecretKey());
+        requestBuilder.addHeader("ApiSecret", passwordlessOptions.getApiPrivateKey());
 
         if (payload != null) {
             byte[] requestBody = objectMapper.writeValueAsBytes(payload);

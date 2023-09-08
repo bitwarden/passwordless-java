@@ -1,11 +1,14 @@
 package com.bitwarden.passwordless.model;
 
-import lombok.Value;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
 
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Builder
 public class StoredCredential {
     PublicKeyCredentialDescriptor descriptor;
     String publicKey;
@@ -23,6 +26,9 @@ public class StoredCredential {
     String userId;
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @RequiredArgsConstructor
+    @Builder
     public static class PublicKeyCredentialDescriptor {
         String type;
         String id;

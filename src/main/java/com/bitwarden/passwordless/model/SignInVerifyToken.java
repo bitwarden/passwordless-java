@@ -1,10 +1,13 @@
 package com.bitwarden.passwordless.model;
 
-import lombok.Value;
+import lombok.*;
 
 import java.time.Instant;
 
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Builder
 public class SignInVerifyToken {
     String userId;
     Instant timestamp;

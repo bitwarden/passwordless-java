@@ -11,5 +11,5 @@ public class PasswordlessOptions {
     @Builder.Default
     String apiUrl = "https://v4.passwordless.dev";
     @NonNull
-    String apiSecretKey;
+    String apiPrivateKey;
 }
