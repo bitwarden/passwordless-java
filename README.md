@@ -1,2 +1,203 @@
-# passwordless-java
-WIP
+# Passwordless Java SDK
+
+The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 8+ runtime.
+
+## Installation
+
+**Maven**: add to the `<dependencies>` in *pom.xml* file:
+
+```xml
+
+<dependency>
+    <groupId>com.bitwarden</groupId>
+    <artifactId>passwordless</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+**Gradle**: add to the `dependencies` in *gradle.build* file:
+
+```groovy
+implementation group: 'org.bitwarden', name: 'passwordless', version: '0.0.1-SNAPSHOT'
+```
+
+### Dependencies
+
+- [Apache HttpClient][apache-http-client] for HTTP API
+- [FasterXML jackson-databind][fasterxml-jackson-databind] for JSON (de)serialization
+
+## Getting Started
+
+Follow the [Get started guide][api-docs].
+
+### Create `PasswordlessClient` instance:
+
+```java
+import com.bitwarden.passwordless.*;
+
+import java.io.*;
+
+public class PasswordlessJavaSdkExample implements Closeable {
+
+    private final PasswordlessClient client;
+
+    public PasswordlessClientExample() {
+        PasswordlessOptions options = PasswordlessOptions.builder()
+                .apiPrivateKey("your_api_secret")
+                .build();
+
+        client = PasswordlessClientBuilder.create(options)
+                .build();
+    }
+
+    @Override
+    public void close() throws IOException {
+        client.close();
+    }
+}
+```
+
+**Note:** You need to close the underlying CloseableHttpClient's connection pool when you are done
+using `PasswordlessClient` with `close` method.
+
+### Register a passkey
+
+```java
+import com.bitwarden.passwordless.*;
+import com.bitwarden.passwordless.error.*;
+import com.bitwarden.passwordless.model.*;
+
+import java.io.*;
+import java.util.*;
+
+import org.slf4j.*;
+
+public class PasswordlessJavaSdkExample {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(PasswordlessJavaSdkExample.class);
+
+    private final PasswordlessClient client;
+
+    // Constructor
+
+    public String getRegisterToken(String alias) {
+
+        // Get existing userid from session or create a new user.
+        String userId = UUID.randomUUID().toString();
+
+        // Options to give the Api
+        RegisterToken registerToken = RegisterToken.builder()
+                // your user id
+                .userId(userId)
+                // e.g. user email, is shown in browser ui
+                .username(alias)
+                // Optional: Link this userid to an alias (e.g. email)
+                .aliases(Arrays.asList(alias))
+                .build();
+
+        try {
+            RegisterTokenResponse response = client.createRegisterToken(registerToken);
+
+            // return this token
+            return response.getToken();
+        } catch (PasswordlessApiException e) {
+            PasswordlessProblemDetails problemDetails = e.getDetails();
+
+            LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
+
+            return null;
+        } catch (IOException e2) {
+            LOGGER.error("Get Register Token failed with unexpected error", e2);
+
+            return null;
+        }
+    }
+}
+```
+
+### Verify user
+
+```java
+import com.bitwarden.passwordless.*;
+import com.bitwarden.passwordless.error.*;
+import com.bitwarden.passwordless.model.*;
+
+import java.io.*;
+import java.util.*;
+
+import org.slf4j.*;
+
+public class PasswordlessJavaSdkExample {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(PasswordlessJavaSdkExample.class);
+
+    private final PasswordlessClient client;
+
+    // Constructor
+
+    public SignInVerifyToken verifySignInToken(String token) {
+
+        SignInVerify signInVerify = SignInVerify.builder()
+                .token(token)
+                .build();
+
+        try {
+            // Sign the user in, set a cookie, etc,
+            return client.signInVerify(signInVerify);
+        } catch (PasswordlessApiException e) {
+            PasswordlessProblemDetails problemDetails = e.getDetails();
+
+            LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
+
+            return null;
+        } catch (IOException e2) {
+            LOGGER.error("Get Register Token failed with unexpected error", e2);
+
+            return null;
+        }
+    }
+}
+```
+
+### Customization
+
+Customize `PasswordlessOptions` by providing `apiPrivateKey` with your Application's Private API Key.
+You can also change the `apiUrl` if you prefer to self-host.
+
+Customize `PasswordlessClientBuilder` by providing `httpClient` [CloseableHttpClient][apache-http-client] instance
+and `objectMapper` [ObjectMapper][fasterxml-jackson-databind].
+
+### Examples
+
+See [Passwordless Java Example](https://github.com/passwordless/passwordless-java-example) for Spring Boot 3 application
+using this library.
+
+## Documentation
+
+For a comprehensive list of examples, check out the [API
+documentation][api-docs].
+
+## Contributing
+
+This library compiles to Java 8 compatible runtime and requires minimum JDK 8 installed.
+
+Newer JDK are still backwards compatible to version 8, so you are free to use any of the JDK version - tested up to
+version 20.
+
+Download and install [JDK 8](https://adoptium.net/temurin/releases/?version=8) if you do not have compatible JDK.
+
+The `JAVA_HOME` environment variable needs to contain installed JDK path.
+
+Build using Maven wrapper:
+
+```shell
+./mvnw clean install
+```
+
+(Or `mvwnw.cmd` for Windows)
+
+[api-docs]:https://docs.passwordless.dev/guide/get-started.html
+
+[apache-http-client]:https://hc.apache.org/httpcomponents-client-5.2.x/index.html
+
+[fasterxml-jackson-databind]:https://github.com/FasterXML/jackson-databind
