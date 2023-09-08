@@ -5,9 +5,9 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserSummary {
     String userId;

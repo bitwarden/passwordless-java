@@ -2,9 +2,9 @@ package com.bitwarden.passwordless.model;
 
 import lombok.*;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AliasPointer {
     String userId;

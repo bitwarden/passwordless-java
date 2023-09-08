@@ -2,6 +2,7 @@ package com.bitwarden.passwordless;
 
 import com.bitwarden.passwordless.error.PasswordlessApiException;
 import com.bitwarden.passwordless.model.*;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("alias", aliasPayload);
 
-        passwordlessHttpClient.sendRequest(request);
+        passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
@@ -35,7 +36,8 @@ class PasswordlessClientImpl implements PasswordlessClient {
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("alias/list",
                 Collections.singletonMap("userId", userId));
 
-        return passwordlessHttpClient.sendRequest(request);
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<AliasPointer>>() {
+        });
     }
 
     @Override
@@ -44,7 +46,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("apps/features", appsSetFeature);
 
-        passwordlessHttpClient.sendRequest(request);
+        passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
@@ -53,7 +55,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("credentials/delete", credentialsDelete);
 
-        passwordlessHttpClient.sendRequest(request);
+        passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
@@ -63,7 +65,8 @@ class PasswordlessClientImpl implements PasswordlessClient {
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("credentials/list",
                 Collections.singletonMap("userId", userId));
 
-        return passwordlessHttpClient.sendRequest(request);
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<StoredCredential>>() {
+        });
     }
 
     @Override
@@ -72,7 +75,8 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("register/token", registerToken);
 
-        return passwordlessHttpClient.sendRequest(request);
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<RegisterTokenResponse>() {
+        });
     }
 
     @Override
@@ -81,14 +85,16 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("signin/verify", signInVerify);
 
-        return passwordlessHttpClient.sendRequest(request);
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<SignInVerifyToken>() {
+        });
     }
 
     @Override
     public List<UserSummary> getUsers() throws PasswordlessApiException, IOException {
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("users/list", Collections.emptyMap());
 
-        return passwordlessHttpClient.sendRequest(request);
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<UserSummary>>() {
+        });
     }
 
     @Override
@@ -97,7 +103,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("users/delete", userDeletePayload);
 
-        passwordlessHttpClient.sendRequest(request);
+        passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override

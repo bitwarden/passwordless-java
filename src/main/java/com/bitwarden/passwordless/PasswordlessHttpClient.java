@@ -53,7 +53,7 @@ class PasswordlessHttpClient implements Closeable {
         return createRequest(ClassicRequestBuilder.post(), path, payload, null);
     }
 
-    public <R> R sendRequest(ClassicHttpRequest request) throws IOException, PasswordlessApiException {
+    public <R> R sendRequest(ClassicHttpRequest request, TypeReference<R> typeReference) throws IOException, PasswordlessApiException {
         try {
             log.debug("Sending request {}", request);
 
@@ -72,9 +72,12 @@ class PasswordlessHttpClient implements Closeable {
                 }
 
                 if (entity != null) {
-                    try (InputStream inStream = entity.getContent()) {
-                        return objectMapper.readValue(inStream, new TypeReference<R>() {
-                        });
+                    String responseBody = EntityUtils.toString(entity);
+
+                    log.debug("Response body {}", responseBody);
+
+                    if (typeReference != null) {
+                        return objectMapper.readValue(responseBody, typeReference);
                     }
                 }
 

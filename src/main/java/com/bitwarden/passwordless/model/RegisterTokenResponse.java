@@ -2,9 +2,9 @@ package com.bitwarden.passwordless.model;
 
 import lombok.*;
 
-@Value
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class RegisterTokenResponse {
     String token;

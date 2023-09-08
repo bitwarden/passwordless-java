@@ -4,9 +4,9 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class SignInVerifyToken {
     String userId;

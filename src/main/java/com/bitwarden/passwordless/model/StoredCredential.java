@@ -5,9 +5,9 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class StoredCredential {
     PublicKeyCredentialDescriptor descriptor;
@@ -25,9 +25,9 @@ public class StoredCredential {
     String nickname;
     String userId;
 
-    @Value
+    @Data
     @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-    @RequiredArgsConstructor
+    @AllArgsConstructor
     @Builder
     public static class PublicKeyCredentialDescriptor {
         String type;

@@ -1,14 +1,12 @@
 package com.bitwarden.passwordless.error;
 
-//import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PasswordlessProblemDetails {
-//    @NotBlank
     String type;
     String title;
     Integer status;

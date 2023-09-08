@@ -4,12 +4,13 @@ import lombok.*;
 
 import java.util.List;
 
-@Value
+@Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AliasPayload {
     String userId;
     List<String> aliases;
-    Boolean hashing;
+    @Builder.Default
+    Boolean hashing = true;
 }
