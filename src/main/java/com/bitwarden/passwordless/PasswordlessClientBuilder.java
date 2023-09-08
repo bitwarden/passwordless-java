@@ -34,7 +34,11 @@ public class PasswordlessClientBuilder {
         if (objectMapper == null) {
             objectMapper = new ObjectMapper();
         }
-        return new PasswordlessClientImpl(passwordlessOptions, httpClient, objectMapper, closeHttpClient);
+
+        PasswordlessHttpClient passwordlessHttpClient = new PasswordlessHttpClient(passwordlessOptions, httpClient,
+                objectMapper, closeHttpClient);
+
+        return new PasswordlessClientImpl(passwordlessHttpClient);
     }
 
     public static PasswordlessClientBuilder create(PasswordlessOptions passwordlessOptions) {
