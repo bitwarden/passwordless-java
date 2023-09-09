@@ -23,8 +23,8 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - name: Build and Test
-        run: ./mvnw --batch-mode package
+        run: mvn --batch-mode package
       - name: Publish to GitHub Packages
-        run: ./mvnw -batch-mode -Dmaven.test.skip deploy -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn -batch-mode -Dmaven.test.skip deploy -s $GITHUB_WORKSPACE/settings.xml
         env:
           GITHUB_TOKEN: ${{ github.token }}
