@@ -2,7 +2,7 @@ package com.bitwarden.passwordless.model;
 
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,9 +15,9 @@ public class Credential {
     String userHandle;
     Integer signatureCounter;
     String attestationFmt;
-    Instant createdAt;
+    LocalDateTime createdAt;
     String aaGuid;
-    Instant lastUsedAt;
+    LocalDateTime lastUsedAt;
     String rpId;
     String origin;
     String country;
