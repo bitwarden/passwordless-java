@@ -1,8 +1,8 @@
 package com.bitwarden.passwordless;
 
+import com.bitwarden.passwordless.error.MalformedUrlException;
 import com.bitwarden.passwordless.error.PasswordlessApiException;
 import com.bitwarden.passwordless.error.PasswordlessProblemDetails;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
@@ -43,12 +43,12 @@ class PasswordlessHttpClient implements Closeable {
         }
     }
 
-    public ClassicHttpRequest createGetRequest(String path, Map<String, String> queryParameters) throws JsonProcessingException {
+    public ClassicHttpRequest createGetRequest(String path, Map<String, String> queryParameters) throws IOException {
         return createRequest(ClassicRequestBuilder.get(), path, null, queryParameters);
     }
 
-    public ClassicHttpRequest createPostRequest(String path, Object payload) throws JsonProcessingException {
-        Objects.requireNonNull(payload);
+    public ClassicHttpRequest createPostRequest(String path, Object payload) throws IOException {
+        Objects.requireNonNull(payload, "POST payload is null");
 
         return createRequest(ClassicRequestBuilder.post(), path, payload, null);
     }
@@ -99,14 +99,14 @@ class PasswordlessHttpClient implements Closeable {
 
     private ClassicHttpRequest createRequest(ClassicRequestBuilder requestBuilder, String path, Object payload,
                                              Map<String, String> queryParameters)
-            throws JsonProcessingException {
+            throws IOException {
         URI uri;
         try {
             uri = new URIBuilder(passwordlessOptions.getApiUrl())
                     .appendPath(path)
                     .build();
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
+            throw new MalformedUrlException("Invalid uri " + passwordlessOptions.getApiUrl() + "/" + path, e);
         }
 
         requestBuilder.setUri(uri);
