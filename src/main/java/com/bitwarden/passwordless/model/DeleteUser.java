@@ -6,6 +6,6 @@ import lombok.*;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class SignInVerify {
-    String token;
+public class DeleteUser {
+    String userId;
 }

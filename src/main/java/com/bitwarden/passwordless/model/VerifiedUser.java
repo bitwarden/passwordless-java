@@ -8,7 +8,7 @@ import java.time.Instant;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class SignInVerifyToken {
+public class VerifiedUser {
     String userId;
     Instant timestamp;
     String rpId;

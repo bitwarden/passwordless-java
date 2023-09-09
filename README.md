@@ -96,7 +96,7 @@ public class PasswordlessJavaSdkExample {
                 .build();
 
         try {
-            RegisterTokenResponse response = client.createRegisterToken(registerToken);
+            RegisteredToken response = client.registerToken(registerToken);
 
             // return this token
             return response.getToken();
@@ -123,7 +123,6 @@ import com.bitwarden.passwordless.error.*;
 import com.bitwarden.passwordless.model.*;
 
 import java.io.*;
-import java.util.*;
 
 import org.slf4j.*;
 
@@ -135,15 +134,15 @@ public class PasswordlessJavaSdkExample {
 
     // Constructor
 
-    public SignInVerifyToken verifySignInToken(String token) {
+    public VerifiedUser verifySignInToken(String token) {
 
-        SignInVerify signInVerify = SignInVerify.builder()
+        VerifySignIn signInVerify = VerifySignIn.builder()
                 .token(token)
                 .build();
 
         try {
             // Sign the user in, set a cookie, etc,
-            return client.signInVerify(signInVerify);
+            return client.signIn(signInVerify);
         } catch (PasswordlessApiException e) {
             PasswordlessProblemDetails problemDetails = e.getDetails();
 

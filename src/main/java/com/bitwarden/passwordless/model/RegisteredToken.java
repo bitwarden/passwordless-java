@@ -6,6 +6,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RegisterTokenResponse {
+public class RegisteredToken {
     String token;
 }

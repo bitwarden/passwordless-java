@@ -21,71 +21,71 @@ class PasswordlessClientImpl implements PasswordlessClient {
     final PasswordlessHttpClient passwordlessHttpClient;
 
     @Override
-    public void createAlias(AliasPayload aliasPayload) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(aliasPayload, "AliasPayload cannot be null");
+    public void createAlias(CreateAlias createAlias) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(createAlias, "createAlias cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("alias", aliasPayload);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("alias", createAlias);
 
         passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
-    public List<AliasPointer> getAliases(String userId) throws PasswordlessApiException, IOException {
+    public List<Alias> getAliases(String userId) throws PasswordlessApiException, IOException {
         Objects.requireNonNull(userId, "userId cannot be null");
 
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("alias/list",
                 Collections.singletonMap("userId", userId));
 
-        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<AliasPointer>>() {
-        });
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<ListResponse<Alias>>() {
+        }).getValues();
     }
 
     @Override
-    public void setAppsFeature(AppsSetFeatures appsSetFeature) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(appsSetFeature, "AppsSetFeatures cannot be null");
+    public void updateAppsFeature(UpdateAppsFeature updateAppsFeature) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(updateAppsFeature, "updateAppsFeature cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("apps/features", appsSetFeature);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("apps/features", updateAppsFeature);
 
         passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
-    public void deleteCredentials(CredentialsDelete credentialsDelete) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(credentialsDelete, "CredentialsDelete cannot be null");
+    public void deleteCredential(DeleteCredential deleteCredential) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(deleteCredential, "deleteCredential cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("credentials/delete", credentialsDelete);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("credentials/delete", deleteCredential);
 
         passwordlessHttpClient.sendRequest(request, null);
     }
 
     @Override
-    public List<StoredCredential> getCredentials(String userId) throws PasswordlessApiException, IOException {
+    public List<Credential> getCredentials(String userId) throws PasswordlessApiException, IOException {
         Objects.requireNonNull(userId, "userId cannot be null");
 
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("credentials/list",
                 Collections.singletonMap("userId", userId));
 
-        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<StoredCredential>>() {
-        });
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<ListResponse<Credential>>() {
+        }).getValues();
     }
 
     @Override
-    public RegisterTokenResponse createRegisterToken(RegisterToken registerToken) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(registerToken, "RegisterToken cannot be null");
+    public RegisteredToken registerToken(RegisterToken registerToken) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(registerToken, "registerToken cannot be null");
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("register/token", registerToken);
 
-        return passwordlessHttpClient.sendRequest(request, new TypeReference<RegisterTokenResponse>() {
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<RegisteredToken>() {
         });
     }
 
     @Override
-    public SignInVerifyToken signInVerify(SignInVerify signInVerify) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(signInVerify, "SignInVerify cannot be null");
+    public VerifiedUser signIn(VerifySignIn verifySignIn) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(verifySignIn, "verifySignIn cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("signin/verify", signInVerify);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("signin/verify", verifySignIn);
 
-        return passwordlessHttpClient.sendRequest(request, new TypeReference<SignInVerifyToken>() {
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<VerifiedUser>() {
         });
     }
 
@@ -93,15 +93,15 @@ class PasswordlessClientImpl implements PasswordlessClient {
     public List<UserSummary> getUsers() throws PasswordlessApiException, IOException {
         ClassicHttpRequest request = passwordlessHttpClient.createGetRequest("users/list", Collections.emptyMap());
 
-        return passwordlessHttpClient.sendRequest(request, new TypeReference<List<UserSummary>>() {
-        });
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<ListResponse<UserSummary>>() {
+        }).getValues();
     }
 
     @Override
-    public void deleteUser(UserDeletePayload userDeletePayload) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(userDeletePayload, "UserDeletePayload cannot be null");
+    public void deleteUser(DeleteUser deleteUser) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(deleteUser, "deleteUser cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("users/delete", userDeletePayload);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("users/delete", deleteUser);
 
         passwordlessHttpClient.sendRequest(request, null);
     }

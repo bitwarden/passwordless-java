@@ -6,6 +6,6 @@ import lombok.*;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class UserDeletePayload {
-    String userId;
+public class UpdateAppsFeature {
+    Integer auditLoggingRetentionPeriod;
 }

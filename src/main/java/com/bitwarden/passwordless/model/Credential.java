@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class StoredCredential {
+public class Credential {
     PublicKeyCredentialDescriptor descriptor;
     String publicKey;
     String userHandle;

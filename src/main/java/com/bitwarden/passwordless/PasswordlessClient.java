@@ -9,30 +9,30 @@ import java.util.List;
 
 public interface PasswordlessClient extends Closeable {
 
-    void createAlias(AliasPayload aliasPayload)
+    void createAlias(CreateAlias createAlias)
             throws PasswordlessApiException, IOException;
 
-    List<AliasPointer> getAliases(String userId)
+    List<Alias> getAliases(String userId)
             throws PasswordlessApiException, IOException;
 
-    void setAppsFeature(AppsSetFeatures appsSetFeature)
+    void updateAppsFeature(UpdateAppsFeature updateAppsFeature)
             throws PasswordlessApiException, IOException;
 
-    void deleteCredentials(CredentialsDelete credentialsDelete)
+    void deleteCredential(DeleteCredential deleteCredential)
             throws PasswordlessApiException, IOException;
 
-    List<StoredCredential> getCredentials(String userId)
+    List<Credential> getCredentials(String userId)
             throws PasswordlessApiException, IOException;
 
-    RegisterTokenResponse createRegisterToken(RegisterToken registerToken)
+    RegisteredToken registerToken(RegisterToken registerToken)
             throws PasswordlessApiException, IOException;
 
-    SignInVerifyToken signInVerify(SignInVerify signInVerify)
+    VerifiedUser signIn(VerifySignIn verifySignIn)
             throws PasswordlessApiException, IOException;
 
     List<UserSummary> getUsers()
             throws PasswordlessApiException, IOException;
 
-    void deleteUser(UserDeletePayload userDeletePayload)
+    void deleteUser(DeleteUser deleteUser)
             throws PasswordlessApiException, IOException;
 }
