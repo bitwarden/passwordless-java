@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TestResponse {
+    @NonNull
     Integer field1;
-    Instant field4;
+    Instant field2;
 }
