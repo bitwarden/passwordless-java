@@ -12,4 +12,5 @@ public class PasswordlessProblemDetails {
     Integer status;
     String detail;
     String instance;
+    String errorCode;
 }

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
 
@@ -72,12 +73,14 @@ class PasswordlessHttpClient implements Closeable {
                 }
 
                 if (entity != null) {
-                    String responseBody = EntityUtils.toString(entity);
+                    byte[] responseBytes = EntityUtils.toByteArray(entity);
 
-                    log.debug("Response body {}", responseBody);
+                    if (log.isDebugEnabled()) {
+                        log.debug("Response body {}", new String(responseBytes, StandardCharsets.UTF_8));
+                    }
 
-                    if (typeReference != null) {
-                        return objectMapper.readValue(responseBody, typeReference);
+                    if (typeReference != null && responseBytes != null && responseBytes.length > 0) {
+                        return objectMapper.readValue(responseBytes, typeReference);
                     }
                 }
 
@@ -131,7 +134,8 @@ class PasswordlessHttpClient implements Closeable {
         PasswordlessProblemDetails details = null;
         if (entity != null) {
             Header contentType = response.getHeader("content-type");
-            if (contentType != null && contentType.getValue().equalsIgnoreCase("application/problem+json")) {
+            if (contentType != null
+                    && contentType.getValue().equalsIgnoreCase(ContentType.APPLICATION_PROBLEM_JSON.getMimeType())) {
                 try (InputStream inStream = entity.getContent()) {
                     details = objectMapper.readValue(inStream, new TypeReference<PasswordlessProblemDetails>() {
                     });
@@ -144,14 +148,17 @@ class PasswordlessHttpClient implements Closeable {
 
             String errorDetail = null;
             if (entity != null) {
-                errorDetail = EntityUtils.toString(entity);
+                byte[] responseBytes = EntityUtils.toByteArray(entity);
+                if (responseBytes != null && responseBytes.length > 0) {
+                    errorDetail = new String(responseBytes, StandardCharsets.UTF_8);
+                }
             }
 
             details = PasswordlessProblemDetails.builder()
+                    .type("https://docs.passwordless.dev/guide/errors.html")
                     .status(response.getCode())
-                    .title("unexpected_error")
+                    .title("Unexpected error")
                     .detail(errorDetail)
-                    .type("https://docs.passwordless.dev/errors")
                     .build();
         }
 
