@@ -13,6 +13,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+import org.apache.hc.core5.http.message.BasicHeader;
 import org.apache.hc.core5.http.message.StatusLine;
 import org.apache.hc.core5.net.URIBuilder;
 
@@ -113,7 +114,7 @@ class PasswordlessHttpClient implements Closeable {
         }
 
         requestBuilder.setUri(uri);
-        requestBuilder.addHeader("ApiSecret", passwordlessOptions.getApiPrivateKey());
+        requestBuilder.addHeader(new LogMaskingHeader("ApiSecret", passwordlessOptions.getApiPrivateKey()));
 
         if (payload != null) {
             byte[] requestBody = objectMapper.writeValueAsBytes(payload);
@@ -163,5 +164,17 @@ class PasswordlessHttpClient implements Closeable {
         }
 
         return details;
+    }
+
+    public static class LogMaskingHeader extends BasicHeader {
+
+        public LogMaskingHeader(String name, Object value) {
+            super(name, value, true);
+        }
+
+        @Override
+        public String toString() {
+            return getName() + ": **MASKED**";
+        }
     }
 }
