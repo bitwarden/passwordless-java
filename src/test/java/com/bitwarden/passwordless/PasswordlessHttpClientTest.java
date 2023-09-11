@@ -186,7 +186,7 @@ class PasswordlessHttpClientTest {
                 }), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isInstanceOf(PasswordlessApiException.class);
-        PasswordlessProblemDetails problemDetails = passwordlessApiException.getDetails();
+        PasswordlessProblemDetails problemDetails = passwordlessApiException.getProblemDetails();
         assertThat(problemDetails).isNotNull();
         assertThat(problemDetails.getType()).isEqualTo("https://docs.passwordless.dev/guide/errors.html");
         assertThat(problemDetails.getTitle()).isEqualTo("Unexpected error");
@@ -214,7 +214,7 @@ class PasswordlessHttpClientTest {
                 }), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isInstanceOf(PasswordlessApiException.class);
-        PasswordlessProblemDetails problemDetails = passwordlessApiException.getDetails();
+        PasswordlessProblemDetails problemDetails = passwordlessApiException.getProblemDetails();
         assertThat(problemDetails).isNotNull();
         assertThat(problemDetails.getType()).isEqualTo("https://docs.passwordless.dev/guide/errors.html");
         assertThat(problemDetails.getTitle()).isEqualTo("Unexpected error");
@@ -240,7 +240,7 @@ class PasswordlessHttpClientTest {
                 }), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isInstanceOf(PasswordlessApiException.class);
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test

@@ -80,7 +80,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.createAlias(createAlias), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -112,7 +112,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.getAliases(DataFactory.USER_ID), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -150,7 +150,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.updateAppsFeature(updateAppsFeature), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -183,7 +183,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.deleteCredential(deleteCredential), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -215,7 +215,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.getCredentials(DataFactory.USER_ID), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -253,7 +253,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.registerToken(registerToken), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -290,7 +290,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.signIn(verifySignIn), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -318,7 +318,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.getUsers(), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
@@ -357,7 +357,7 @@ class PasswordlessClientImplTest {
                 () -> passwordlessClient.deleteUser(deleteUser), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
-        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test

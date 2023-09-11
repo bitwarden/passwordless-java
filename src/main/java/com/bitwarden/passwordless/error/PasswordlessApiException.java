@@ -1,23 +1,26 @@
 package com.bitwarden.passwordless.error;
 
 import com.bitwarden.passwordless.PasswordlessClient;
-import lombok.Getter;
-import lombok.NonNull;
+
+import java.util.Objects;
 
 /**
  * Thrown when Passwordless API returns an error during the {@link PasswordlessClient} method execution.
- * Access the {@link PasswordlessProblemDetails problem details} with {@link #getDetails()}
+ * Access the {@link PasswordlessProblemDetails problem details} with {@link #getProblemDetails()}
  *
  * @see PasswordlessProblemDetails
  * @see PasswordlessClient
  */
-@Getter
 public class PasswordlessApiException extends Exception {
-    @NonNull
-    private final PasswordlessProblemDetails details;
 
-    public PasswordlessApiException(@NonNull PasswordlessProblemDetails details) {
-        super(details.toString());
-        this.details = details;
+    private final PasswordlessProblemDetails problemDetails;
+
+    public PasswordlessApiException(PasswordlessProblemDetails problemDetails) {
+        super(Objects.requireNonNull(problemDetails, "problemDetails cannot be null").toString());
+        this.problemDetails = problemDetails;
+    }
+
+    public PasswordlessProblemDetails getProblemDetails() {
+        return problemDetails;
     }
 }

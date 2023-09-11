@@ -57,7 +57,7 @@ public class PasswordlessJavaSdkExample implements Closeable {
 }
 ```
 
-**Note:** You need to close the underlying CloseableHttpClient's connection pool when you are done
+**Note:** You need to close the underlying http client resources when you are done
 using `PasswordlessClient` with `close` method.
 
 ### Register a passkey
@@ -101,7 +101,7 @@ public class PasswordlessJavaSdkExample {
             // return this token
             return response.getToken();
         } catch (PasswordlessApiException e) {
-            PasswordlessProblemDetails problemDetails = e.getDetails();
+            PasswordlessProblemDetails problemDetails = e.getProblemDetails();
 
             LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
 
@@ -144,7 +144,7 @@ public class PasswordlessJavaSdkExample {
             // Sign the user in, set a cookie, etc,
             return client.signIn(signInVerify);
         } catch (PasswordlessApiException e) {
-            PasswordlessProblemDetails problemDetails = e.getDetails();
+            PasswordlessProblemDetails problemDetails = e.getProblemDetails();
 
             LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
 
