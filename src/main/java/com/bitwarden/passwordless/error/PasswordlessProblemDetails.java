@@ -2,6 +2,9 @@ package com.bitwarden.passwordless.error;
 
 import lombok.*;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -13,4 +16,5 @@ public class PasswordlessProblemDetails {
     String detail;
     String instance;
     String errorCode;
+    Map<String, List<String>> errors;
 }
