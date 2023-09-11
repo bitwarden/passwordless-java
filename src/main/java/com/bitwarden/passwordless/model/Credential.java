@@ -11,7 +11,13 @@ import java.util.List;
 @Builder
 public class Credential {
     CredentialDescriptor descriptor;
+    /**
+     * Base64 encoded public key.
+     */
     String publicKey;
+    /**
+     * Base64 encoded user handle.
+     */
     String userHandle;
     Integer signatureCounter;
     String attestationFmt;
@@ -31,6 +37,9 @@ public class Credential {
     @Builder
     public static class CredentialDescriptor {
         String type;
+        /**
+         * Base64 encoded credential descriptor id.
+         */
         String id;
         List<String> transports;
     }

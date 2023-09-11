@@ -7,6 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DeleteCredential {
+    /**
+     * Base64 encoded credential id.
+     */
     @NonNull
     String credentialId;
 }

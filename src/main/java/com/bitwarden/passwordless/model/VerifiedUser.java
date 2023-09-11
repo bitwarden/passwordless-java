@@ -17,6 +17,9 @@ public class VerifiedUser {
     String device;
     String country;
     String nickname;
+    /**
+     * Base64 encoded credential id.
+     */
     String credentialId;
     Instant expiresAt;
     String tokenId;
