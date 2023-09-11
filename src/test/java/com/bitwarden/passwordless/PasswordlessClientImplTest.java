@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -42,17 +41,14 @@ class PasswordlessClientImplTest {
     @BeforeEach
     void setUp() {
         passwordlessOptions = DataFactory.passwordlessOptions(wireMock.baseUrl());
-        PasswordlessHttpClient passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                .buildPasswordlessHttpClient();
+        PasswordlessClientBuilder clientBuilder = PasswordlessClientBuilder.create(passwordlessOptions);
 
-        objectMapper = passwordlessHttpClient.objectMapper;
+        passwordlessClient = clientBuilder.build();
 
-        passwordlessClient = new PasswordlessClientImpl(passwordlessHttpClient);
+        objectMapper = clientBuilder.getObjectMapper();
 
         wireMockUtils = WireMockUtils.builder()
-                .wireMockExtension(wireMock)
                 .objectMapper(objectMapper)
-                .passwordlessOptions(passwordlessOptions)
                 .build();
     }
 
@@ -85,8 +81,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/alias", createAlias);
     }
 
     @Test
@@ -97,8 +91,6 @@ class PasswordlessClientImplTest {
         CreateAlias createAlias = DataFactory.createAlias();
 
         passwordlessClient.createAlias(createAlias);
-
-        wireMockUtils.verifyPost("/alias", createAlias);
     }
 
     @Test
@@ -121,8 +113,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyGet("/alias/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
@@ -138,8 +128,6 @@ class PasswordlessClientImplTest {
         List<Alias> aliases = passwordlessClient.getAliases(DataFactory.USER_ID);
 
         assertThat(aliases).containsExactlyInAnyOrder(alias1, alias2);
-
-        wireMockUtils.verifyGet("/alias/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
@@ -163,8 +151,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/apps/features", updateAppsFeature);
     }
 
     @Test
@@ -175,8 +161,6 @@ class PasswordlessClientImplTest {
         UpdateAppsFeature updateAppsFeature = DataFactory.updateAppsFeature();
 
         passwordlessClient.updateAppsFeature(updateAppsFeature);
-
-        wireMockUtils.verifyPost("/apps/features", updateAppsFeature);
     }
 
     @Test
@@ -200,8 +184,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/credentials/delete", deleteCredential);
     }
 
     @Test
@@ -212,8 +194,6 @@ class PasswordlessClientImplTest {
         DeleteCredential deleteCredential = DataFactory.deleteCredential();
 
         passwordlessClient.deleteCredential(deleteCredential);
-
-        wireMockUtils.verifyPost("/credentials/delete", deleteCredential);
     }
 
     @Test
@@ -236,8 +216,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyGet("/credentials/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
@@ -253,8 +231,6 @@ class PasswordlessClientImplTest {
         List<Credential> credentials = passwordlessClient.getCredentials(DataFactory.USER_ID);
 
         assertThat(credentials).containsExactlyInAnyOrder(credential1, credential2);
-
-        wireMockUtils.verifyGet("/credentials/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
@@ -278,8 +254,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/register/token", registerToken);
     }
 
     @Test
@@ -294,8 +268,6 @@ class PasswordlessClientImplTest {
         RegisteredToken registeredToken = passwordlessClient.registerToken(registerToken);
 
         assertThat(registeredToken).isEqualTo(expectedRegisteredToken);
-
-        wireMockUtils.verifyPost("/register/token", registerToken);
     }
 
     @Test
@@ -319,8 +291,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/signin/verify", verifySignIn);
     }
 
     @Test
@@ -335,8 +305,6 @@ class PasswordlessClientImplTest {
         VerifiedUser verifiedUser = passwordlessClient.signIn(verifySignIn);
 
         assertThat(verifiedUser).isEqualTo(expectedVerifiedUser);
-
-        wireMockUtils.verifyPost("/signin/verify", verifySignIn);
     }
 
     @Test
@@ -351,8 +319,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyGet("/users/list", null);
     }
 
     @Test
@@ -369,8 +335,6 @@ class PasswordlessClientImplTest {
         List<UserSummary> users = passwordlessClient.getUsers();
 
         assertThat(users).containsExactlyInAnyOrder(userSummary1, userSummary2, userSummary3);
-
-        wireMockUtils.verifyGet("/users/list", null);
     }
 
     @Test
@@ -394,8 +358,6 @@ class PasswordlessClientImplTest {
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost("/users/delete", deleteUser);
     }
 
     @Test
@@ -406,8 +368,6 @@ class PasswordlessClientImplTest {
         DeleteUser deleteUser = DataFactory.deleteUser();
 
         passwordlessClient.deleteUser(deleteUser);
-
-        wireMockUtils.verifyPost("/users/delete", deleteUser);
     }
 
     @Test

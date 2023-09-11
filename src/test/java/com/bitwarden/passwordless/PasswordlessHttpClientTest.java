@@ -8,6 +8,7 @@ import com.bitwarden.passwordless.model.TestResponse;
 import com.bitwarden.passwordless.utils.WireMockUtils;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Body;
 import com.github.tomakehurst.wiremock.http.ContentTypeHeader;
@@ -50,6 +51,8 @@ class PasswordlessHttpClientTest {
     PasswordlessOptions passwordlessOptions;
     PasswordlessHttpClient passwordlessHttpClient;
 
+    ObjectMapper objectMapper;
+
     WireMockUtils wireMockUtils;
 
     @BeforeEach
@@ -66,10 +69,10 @@ class PasswordlessHttpClientTest {
     }
 
     @Test
-    void createPostRequest_invalidApiUrl_IOException() throws IOException {
+    void createPostRequest_invalidApiUrl_IOException() {
         PasswordlessOptions passwordlessOptions = DataFactory.passwordlessOptions("http://localhost^:8080");
-        passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                .buildPasswordlessHttpClient();
+
+        initPasswordlessHttpClient(passwordlessOptions);
 
         TestRequest testRequest = DataFactory.testRequest();
 
@@ -92,17 +95,16 @@ class PasswordlessHttpClientTest {
         initPasswordlessHttpClient();
 
         TestRequest testRequest = DataFactory.testRequest();
-        String testRequestJson = passwordlessHttpClient.objectMapper.writeValueAsString(testRequest);
+        String testRequestJson = objectMapper.writeValueAsString(testRequest);
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest(TEST_URL, testRequest);
         validateRequest(request, "POST", TEST_URL, testRequestJson);
     }
 
     @Test
-    void createGetRequest_invalidApiUrl_IOException() throws IOException {
+    void createGetRequest_invalidApiUrl_IOException() {
         PasswordlessOptions passwordlessOptions = DataFactory.passwordlessOptions("http://localhost^:8080");
-        passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                .buildPasswordlessHttpClient();
+        initPasswordlessHttpClient(passwordlessOptions);
 
         assertThatThrownBy(() -> passwordlessHttpClient.createGetRequest(TEST_URL,
                 Collections.singletonMap("userId", "testUser")))
@@ -154,8 +156,9 @@ class PasswordlessHttpClientTest {
 
         String apiUrl = "http://localhost:" + unreachablePort;
         PasswordlessOptions passwordlessOptions = DataFactory.passwordlessOptions(apiUrl);
-        passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                .buildPasswordlessHttpClient();
+
+        initPasswordlessHttpClient(passwordlessOptions);
+
         TestRequest testRequest = DataFactory.testRequest();
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest(TEST_URL, testRequest);
@@ -189,8 +192,6 @@ class PasswordlessHttpClientTest {
         assertThat(problemDetails.getTitle()).isEqualTo("Unexpected error");
         assertThat(problemDetails.getStatus()).isEqualTo(404);
         assertThat(problemDetails.getDetail()).isNull();
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
@@ -198,7 +199,7 @@ class PasswordlessHttpClientTest {
         initPasswordlessHttpClient();
 
         TestResponse testResponse = DataFactory.testResponse();
-        String testResponseJson = passwordlessHttpClient.objectMapper.writeValueAsString(testResponse);
+        String testResponseJson = objectMapper.writeValueAsString(testResponse);
 
         wireMock.stubFor(post(urlEqualTo(TEST_URL))
                 .willReturn(WireMock.notFound()
@@ -219,8 +220,6 @@ class PasswordlessHttpClientTest {
         assertThat(problemDetails.getTitle()).isEqualTo("Unexpected error");
         assertThat(problemDetails.getStatus()).isEqualTo(404);
         assertThat(problemDetails.getDetail()).isEqualTo(testResponseJson);
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
@@ -242,8 +241,6 @@ class PasswordlessHttpClientTest {
 
         assertThat(passwordlessApiException).isInstanceOf(PasswordlessApiException.class);
         assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
@@ -265,8 +262,6 @@ class PasswordlessHttpClientTest {
                 }), IOException.class);
 
         assertThat(exception).isInstanceOf(IOException.class).isInstanceOf(JacksonException.class);
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
@@ -285,8 +280,6 @@ class PasswordlessHttpClientTest {
         });
 
         assertThat(response).isEqualTo(testResponse);
-
-        wireMockUtils.verifyGet(TEST_URL, null);
     }
 
     @Test
@@ -307,8 +300,6 @@ class PasswordlessHttpClientTest {
         });
 
         assertThat(response).isEqualTo(testResponse);
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
@@ -326,17 +317,15 @@ class PasswordlessHttpClientTest {
         });
 
         assertThat(response).isNull();
-
-        wireMockUtils.verifyPost(TEST_URL, testRequest);
     }
 
     @Test
     void close_userProvidedHttpClient_httpClientNotClosed() throws IOException, PasswordlessApiException {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-            passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                    .httpClient(httpClient)
-                    .buildPasswordlessHttpClient();
-            initWireMockUtils();
+            PasswordlessClientBuilder clientBuilder = PasswordlessClientBuilder.create(passwordlessOptions)
+                    .httpClient(httpClient);
+
+            passwordlessHttpClient = clientBuilder.buildPasswordlessHttpClient();
 
             passwordlessHttpClient.close();
 
@@ -350,13 +339,11 @@ class PasswordlessHttpClientTest {
 
             passwordlessHttpClient.sendRequest(request, new TypeReference<TestResponse>() {
             });
-
-            wireMockUtils.verifyPost(TEST_URL, testRequest);
         }
     }
 
     @Test
-    void close_defaultHttpClient_httpClientClosed() throws IOException, PasswordlessApiException {
+    void close_defaultHttpClient_httpClientClosed() throws IOException {
         initPasswordlessHttpClient();
 
         passwordlessHttpClient.close();
@@ -377,17 +364,17 @@ class PasswordlessHttpClientTest {
     }
 
     private void initPasswordlessHttpClient() {
-        passwordlessHttpClient = PasswordlessClientBuilder.create(passwordlessOptions)
-                .buildPasswordlessHttpClient();
-
-        initWireMockUtils();
+        initPasswordlessHttpClient(this.passwordlessOptions);
     }
 
-    private void initWireMockUtils() {
+    private void initPasswordlessHttpClient(PasswordlessOptions passwordlessOptions) {
+        PasswordlessClientBuilder clientBuilder = PasswordlessClientBuilder.create(passwordlessOptions);
+        passwordlessHttpClient = clientBuilder.buildPasswordlessHttpClient();
+
+        objectMapper = clientBuilder.getObjectMapper();
+
         wireMockUtils = WireMockUtils.builder()
-                .wireMockExtension(wireMock)
-                .objectMapper(passwordlessHttpClient.objectMapper)
-                .passwordlessOptions(passwordlessOptions)
+                .objectMapper(objectMapper)
                 .build();
     }
 

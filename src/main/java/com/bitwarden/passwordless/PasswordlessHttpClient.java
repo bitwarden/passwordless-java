@@ -29,13 +29,13 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class PasswordlessHttpClient implements Closeable {
     @NonNull
-    final PasswordlessOptions passwordlessOptions;
+    private final PasswordlessOptions passwordlessOptions;
     @NonNull
-    final CloseableHttpClient httpClient;
+    private final CloseableHttpClient httpClient;
     @NonNull
-    final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
     @NonNull
-    final Boolean closeHttpClient;
+    private final Boolean closeHttpClient;
 
     @Override
     public void close() throws IOException {

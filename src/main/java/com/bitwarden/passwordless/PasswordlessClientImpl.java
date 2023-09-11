@@ -18,7 +18,7 @@ import java.util.Objects;
 class PasswordlessClientImpl implements PasswordlessClient {
 
     @NonNull
-    final PasswordlessHttpClient passwordlessHttpClient;
+    private final PasswordlessHttpClient passwordlessHttpClient;
 
     @Override
     public void createAlias(CreateAlias createAlias) throws PasswordlessApiException, IOException {
