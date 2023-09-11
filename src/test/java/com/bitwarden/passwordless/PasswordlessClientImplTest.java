@@ -133,8 +133,7 @@ class PasswordlessClientImplTest {
 
         wireMock.stubFor(get(urlPathEqualTo("/alias/list"))
                 .withQueryParam("userId", equalTo(DataFactory.USER_ID))
-                .willReturn(WireMock.ok()
-                        .withResponseBody(wireMockUtils.createJsonBody(aliasListResponse))));
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(aliasListResponse))));
 
         List<Alias> aliases = passwordlessClient.getAliases(DataFactory.USER_ID);
 
@@ -157,7 +156,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/apps/features"))
                 .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
 
-        UpdateAppsFeature updateAppsFeature = DataFactory.createUpdateAppsFeature();
+        UpdateAppsFeature updateAppsFeature = DataFactory.updateAppsFeature();
 
         PasswordlessApiException passwordlessApiException = catchThrowableOfType(
                 () -> passwordlessClient.updateAppsFeature(updateAppsFeature), PasswordlessApiException.class);
@@ -173,7 +172,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/apps/features"))
                 .willReturn(WireMock.ok()));
 
-        UpdateAppsFeature updateAppsFeature = DataFactory.createUpdateAppsFeature();
+        UpdateAppsFeature updateAppsFeature = DataFactory.updateAppsFeature();
 
         passwordlessClient.updateAppsFeature(updateAppsFeature);
 
@@ -194,7 +193,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/credentials/delete"))
                 .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
 
-        DeleteCredential deleteCredential = DataFactory.createDeleteCredential();
+        DeleteCredential deleteCredential = DataFactory.deleteCredential();
 
         PasswordlessApiException passwordlessApiException = catchThrowableOfType(
                 () -> passwordlessClient.deleteCredential(deleteCredential), PasswordlessApiException.class);
@@ -210,7 +209,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/credentials/delete"))
                 .willReturn(WireMock.ok()));
 
-        DeleteCredential deleteCredential = DataFactory.createDeleteCredential();
+        DeleteCredential deleteCredential = DataFactory.deleteCredential();
 
         passwordlessClient.deleteCredential(deleteCredential);
 
@@ -225,11 +224,37 @@ class PasswordlessClientImplTest {
     }
 
     @Test
-    void getCredentials_errorResponse_PasswordlessApiException() {
+    void getCredentials_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(get(urlPathEqualTo("/credentials/list"))
+                .withQueryParam("userId", equalTo(DataFactory.USER_ID))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.getCredentials(DataFactory.USER_ID), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+
+        wireMockUtils.verifyGet("/credentials/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
-    void getCredentials_validUserId_validResponse() {
+    void getCredentials_validUserId_validResponse() throws IOException, PasswordlessApiException {
+        Credential credential1 = DataFactory.credential1();
+        Credential credential2 = DataFactory.credential2();
+        ListResponse<Credential> credentialListResponse = new ListResponse<>(Arrays.asList(credential1, credential2));
+
+        wireMock.stubFor(get(urlPathEqualTo("/credentials/list"))
+                .withQueryParam("userId", equalTo(DataFactory.USER_ID))
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(credentialListResponse))));
+
+        List<Credential> credentials = passwordlessClient.getCredentials(DataFactory.USER_ID);
+
+        assertThat(credentials).containsExactlyInAnyOrder(credential1, credential2);
+
+        wireMockUtils.verifyGet("/credentials/list", Collections.singletonMap("userId", DataFactory.USER_ID));
     }
 
     @Test
@@ -240,11 +265,37 @@ class PasswordlessClientImplTest {
     }
 
     @Test
-    void registerToken_errorResponse_PasswordlessApiException() {
+    void registerToken_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(post(urlEqualTo("/register/token"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        RegisterToken registerToken = DataFactory.registerToken();
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.registerToken(registerToken), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+
+        wireMockUtils.verifyPost("/register/token", registerToken);
     }
 
     @Test
-    void registerToken_validRequest_validResponse() {
+    void registerToken_validRequest_validResponse() throws PasswordlessApiException, IOException {
+        RegisteredToken expectedRegisteredToken = DataFactory.registeredToken();
+
+        wireMock.stubFor(post(urlEqualTo("/register/token"))
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(expectedRegisteredToken))));
+
+        RegisterToken registerToken = DataFactory.registerToken();
+
+        RegisteredToken registeredToken = passwordlessClient.registerToken(registerToken);
+
+        assertThat(registeredToken).isEqualTo(expectedRegisteredToken);
+
+        wireMockUtils.verifyPost("/register/token", registerToken);
     }
 
     @Test
@@ -255,19 +306,71 @@ class PasswordlessClientImplTest {
     }
 
     @Test
-    void signIn_errorResponse_PasswordlessApiException() {
+    void signIn_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(post(urlEqualTo("/signin/verify"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        VerifySignIn verifySignIn = DataFactory.verifySignIn();
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.signIn(verifySignIn), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+
+        wireMockUtils.verifyPost("/signin/verify", verifySignIn);
     }
 
     @Test
-    void signIn_validRequest_validResponse() {
+    void signIn_validRequest_validResponse() throws IOException, PasswordlessApiException {
+        VerifiedUser expectedVerifiedUser = DataFactory.verifiedUser();
+
+        wireMock.stubFor(post(urlEqualTo("/signin/verify"))
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(expectedVerifiedUser))));
+
+        VerifySignIn verifySignIn = DataFactory.verifySignIn();
+
+        VerifiedUser verifiedUser = passwordlessClient.signIn(verifySignIn);
+
+        assertThat(verifiedUser).isEqualTo(expectedVerifiedUser);
+
+        wireMockUtils.verifyPost("/signin/verify", verifySignIn);
     }
 
     @Test
-    void getUsers_errorResponse_PasswordlessApiException() {
+    void getUsers_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(get(urlPathEqualTo("/users/list"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.getUsers(), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+
+        wireMockUtils.verifyGet("/users/list", null);
     }
 
     @Test
-    void getUsers_valid_validResponse() {
+    void getUsers_valid_validResponse() throws PasswordlessApiException, IOException {
+        UserSummary userSummary1 = DataFactory.userSummary1();
+        UserSummary userSummary2 = DataFactory.userSummary2();
+        UserSummary userSummary3 = DataFactory.userSummary3();
+        ListResponse<UserSummary> userSummaryListResponse = new ListResponse<>(Arrays.asList(userSummary1, userSummary2,
+                userSummary3));
+
+        wireMock.stubFor(get(urlPathEqualTo("/users/list"))
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(userSummaryListResponse))));
+
+        List<UserSummary> users = passwordlessClient.getUsers();
+
+        assertThat(users).containsExactlyInAnyOrder(userSummary1, userSummary2, userSummary3);
+
+        wireMockUtils.verifyGet("/users/list", null);
     }
 
     @Test
@@ -278,11 +381,33 @@ class PasswordlessClientImplTest {
     }
 
     @Test
-    void deleteUser_errorResponse_PasswordlessApiException() {
+    void deleteUser_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(post(urlEqualTo("/users/delete"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        DeleteUser deleteUser = DataFactory.deleteUser();
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.deleteUser(deleteUser), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getDetails()).isEqualTo(problemDetails);
+
+        wireMockUtils.verifyPost("/users/delete", deleteUser);
     }
 
     @Test
-    void deleteUser_validRequest_validResponse() {
+    void deleteUser_validRequest_validResponse() throws PasswordlessApiException, IOException {
+        wireMock.stubFor(post(urlEqualTo("/users/delete"))
+                .willReturn(WireMock.ok()));
+
+        DeleteUser deleteUser = DataFactory.deleteUser();
+
+        passwordlessClient.deleteUser(deleteUser);
+
+        wireMockUtils.verifyPost("/users/delete", deleteUser);
     }
 
     @Test

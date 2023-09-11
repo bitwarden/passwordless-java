@@ -5,7 +5,10 @@ import com.bitwarden.passwordless.error.PasswordlessProblemDetails;
 import com.bitwarden.passwordless.model.*;
 import lombok.experimental.UtilityClass;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 
 @UtilityClass
 public class DataFactory {
@@ -67,15 +70,132 @@ public class DataFactory {
                 .build();
     }
 
-    public UpdateAppsFeature createUpdateAppsFeature() {
+    public UpdateAppsFeature updateAppsFeature() {
         return UpdateAppsFeature.builder()
                 .auditLoggingRetentionPeriod(12)
                 .build();
     }
 
-    public DeleteCredential createDeleteCredential() {
+    public DeleteCredential deleteCredential() {
         return DeleteCredential.builder()
                 .credentialId("ZtmCjN6tOMM5X_KxfYApAHI-5n6C4KRy9YMeMqfNjj8")
+                .build();
+    }
+
+    public Credential credential1() {
+        return Credential.builder()
+                .userId(USER_ID)
+                .descriptor(Credential.PublicKeyCredentialDescriptor.builder()
+                        .type("public-key")
+                        .id("ZtmCjN6tOMM5X_KxfYApAHI-5n6C4KRy9YMeMqfNjj8")
+                        .build())
+                .publicKey("pQECAyYgASFYIOsfC6kHh3pBohSGE6WwwGo8rJYG2lgmSbBfgtIq1gJzIlggr/6DYuFeATzcucHJ2ejCF2qWH7Z43yK4z/UYAV9YrY4=")
+                .userHandle("ZWI0ZGVlMDctMmQwNS00MDRlLTgwZWQtMGY2NWQwYzRlMzBl")
+                .signatureCounter(2)
+                .attestationFmt("none")
+                .createdAt(LocalDateTime.parse("2023-09-09T20:05:03.6059728"))
+                .aaGuid("00000000-0000-0000-0000-000000000000")
+                .lastUsedAt(LocalDateTime.parse("2023-09-09T20:09:59.6593325"))
+                .origin("http://localhost:8080")
+                .country("PL")
+                .device("Chrome, Mac OS X 10")
+                .build();
+   }
+
+    public Credential credential2() {
+        return Credential.builder()
+                .userId(USER_ID)
+                .descriptor(Credential.PublicKeyCredentialDescriptor.builder()
+                        .type("public-key")
+                        .id("CYdwzAHqmUr85Dpei2kbWHs9xsBp1clzbG09VUcfnS0")
+                        .build())
+                .publicKey("pQECAyYgASFYIHSn0S/oH/sgZx12v37duci9gDkg0bB4f25h8p+6ecq2Ilgg2RadGaGqyJpNtm9ETrg+Uinf5n8SdPZN0oibSWb6TDc=")
+                .userHandle("ODU5YTIyZTAtYmVmYS00ZWY0LWFjNDktNTRlZDkwYzFkZWIy")
+                .signatureCounter(1)
+                .attestationFmt("none")
+                .createdAt(LocalDateTime.parse("2023-09-09T21:18:00.1309909"))
+                .aaGuid("00000000-0000-0000-0000-000000000000")
+                .lastUsedAt(LocalDateTime.parse("2023-09-09T21:32:50.2848782"))
+                .origin("http://localhost:8080")
+                .country("PL")
+                .device("Chrome, Mac OS X 10")
+                .build();
+    }
+
+    public RegisterToken registerToken() {
+        return RegisterToken.builder()
+                .userId(USER_ID)
+                .username("TestUser")
+                .attestation("none")
+                .authenticatorType("any")
+                .discoverable(true)
+                .userVerification("preferred")
+                .aliases(Collections.emptyList())
+                .aliasHashing(true)
+                .expiresAt(Instant.parse("2023-09-09T20:07:02.365573Z"))
+                .build();
+    }
+
+    public RegisteredToken registeredToken() {
+        return RegisteredToken.builder()
+                .token("register_k8QgFOUhu_arMUbfi_93OZFdc6M39tPdmmNbx5xFZlMUS_TEgdwAE9f_VyjOIGT80GbZJDAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMMDAwMDAwMDA2SRlYjRkZWUwNy0yZDA1LTQwNGUtODBlZC0wZjY1ZDBjNGUzMGXAqFRlc3RVc2VypG5vbmWjYW55w6lwcmVmZXJyZWSQw84VNwZS")
+                .build();
+    }
+
+    public VerifySignIn verifySignIn() {
+        return VerifySignIn.builder()
+                .token("verify_k8QgiPlgfMVr34FyFipBrkj6jBwKT9QifsFx-DSa1L3Yp_PE1NwAE9f_ppPH0GT80Y_ZJDBlZGQ2NWJjLTliOGQtNGIxYS1iMjA4LTIxYzZjOGYxYWQ5NK5wYXNza2V5X3NpZ25pbsDAwMDAwMDZJGViNGRlZTA3LTJkMDUtNDA0ZS04MGVkLTBmNjVkMGM0ZTMwZdf_ppOx8GT80RepbG9jYWxob3N0tWh0dHA6Ly9sb2NhbGhvc3Q6ODA4MMOzQ2hyb21lLCBNYWMgT1MgWCAxMKJQTMDEIGbZgozerTjDOV_ysX2AKQByPuZ-guCkcvWDHjKnzY4_zhU3BlI")
+                .build();
+    }
+
+    public VerifiedUser verifiedUser() {
+        return VerifiedUser.builder()
+                .success(true)
+                .userId(USER_ID)
+                .timestamp(Instant.parse("2023-09-09T20:09:59.698674300Z"))
+                .origin("http://localhost:8080")
+                .device("Chrome, Mac OS X 10")
+                .country("PL")
+                .credentialId("ZtmCjN6tOMM5X/KxfYApAHI+5n6C4KRy9YMeMqfNjj8=")
+                .expiresAt(Instant.parse("2023-09-09T20:11:59.698675700Z"))
+                .tokenId("0edd65bc-9b8d-4b1a-b208-21c6c8f1ad94")
+                .type("passkey_signin")
+                .build();
+    }
+
+    public UserSummary userSummary1() {
+        return UserSummary.builder()
+                .userId(USER_ID)
+                .aliasCount(2)
+                .aliases(Arrays.asList(null, null))
+                .credentialsCount(1)
+                .lastUsedAt(LocalDateTime.parse("2023-09-09T20:09:59.6593325"))
+                .build();
+    }
+
+    public UserSummary userSummary2() {
+        return UserSummary.builder()
+                .userId("859a22e0-befa-4ef4-ac49-54ed90c1deb2")
+                .aliasCount(1)
+                .aliases(Collections.singletonList("TestUser2"))
+                .credentialsCount(1)
+                .lastUsedAt(LocalDateTime.parse("2023-09-09T21:09:59.6593325"))
+                .build();
+    }
+
+    public UserSummary userSummary3() {
+        return UserSummary.builder()
+                .userId("859a22e0-befa-4ef4-ac49-54ed90c1deb2")
+                .aliasCount(0)
+                .aliases(null)
+                .credentialsCount(0)
+                .lastUsedAt(LocalDateTime.parse("2023-09-09T22:09:59.6593325"))
+                .build();
+    }
+
+    public DeleteUser deleteUser() {
+        return DeleteUser.builder()
+                .userId(USER_ID)
                 .build();
     }
 }
