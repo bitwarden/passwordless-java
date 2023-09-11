@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Credential {
-    PublicKeyCredentialDescriptor descriptor;
+    CredentialDescriptor descriptor;
     String publicKey;
     String userHandle;
     Integer signatureCounter;
@@ -29,7 +29,7 @@ public class Credential {
     @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
     @AllArgsConstructor
     @Builder
-    public static class PublicKeyCredentialDescriptor {
+    public static class CredentialDescriptor {
         String type;
         String id;
         List<String> transports;

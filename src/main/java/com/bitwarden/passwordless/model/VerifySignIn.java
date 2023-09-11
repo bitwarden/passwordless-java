@@ -7,5 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class VerifySignIn {
+    @NonNull
     String token;
 }

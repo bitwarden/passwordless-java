@@ -9,6 +9,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 public class VerifiedUser {
+    Boolean success;
     String userId;
     Instant timestamp;
     String rpId;
@@ -17,7 +18,6 @@ public class VerifiedUser {
     String country;
     String nickname;
     String credentialId;
-    Boolean success;
     Instant expiresAt;
     String tokenId;
     String type;

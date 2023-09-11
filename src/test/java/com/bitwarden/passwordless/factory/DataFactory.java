@@ -85,7 +85,7 @@ public class DataFactory {
     public Credential credential1() {
         return Credential.builder()
                 .userId(USER_ID)
-                .descriptor(Credential.PublicKeyCredentialDescriptor.builder()
+                .descriptor(Credential.CredentialDescriptor.builder()
                         .type("public-key")
                         .id("ZtmCjN6tOMM5X_KxfYApAHI-5n6C4KRy9YMeMqfNjj8")
                         .build())
@@ -105,7 +105,7 @@ public class DataFactory {
     public Credential credential2() {
         return Credential.builder()
                 .userId(USER_ID)
-                .descriptor(Credential.PublicKeyCredentialDescriptor.builder()
+                .descriptor(Credential.CredentialDescriptor.builder()
                         .type("public-key")
                         .id("CYdwzAHqmUr85Dpei2kbWHs9xsBp1clzbG09VUcfnS0")
                         .build())

@@ -7,5 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DeleteUser {
+    @NonNull
     String userId;
 }

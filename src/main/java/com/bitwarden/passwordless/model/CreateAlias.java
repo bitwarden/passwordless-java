@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CreateAlias {
+    @NonNull
     String userId;
     List<String> aliases;
     @Builder.Default

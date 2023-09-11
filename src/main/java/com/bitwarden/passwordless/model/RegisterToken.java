@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RegisterToken {
+    @NonNull
     String userId;
     String displayName;
     String username;
