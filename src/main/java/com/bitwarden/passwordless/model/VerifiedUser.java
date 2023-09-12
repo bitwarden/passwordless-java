@@ -1,13 +1,14 @@
 package com.bitwarden.passwordless.model;
 
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 
-@Data
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@Value
 @AllArgsConstructor
 @Builder
+@Jacksonized
 public class VerifiedUser {
     Boolean success;
     String userId;

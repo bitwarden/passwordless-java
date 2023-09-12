@@ -1,20 +1,25 @@
 package com.bitwarden.passwordless.model;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
 @Data
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
+@Jacksonized
 public class RegisterToken {
     @NonNull
-    String userId;
+    final String userId;
+    @NonNull
+    final String username;
     String displayName;
-    String username;
     @Builder.Default
     String attestation = "none";
     @Builder.Default

@@ -1,11 +1,12 @@
 package com.bitwarden.passwordless.model;
 
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@Value
 @AllArgsConstructor
 @Builder
+@Jacksonized
 public class DeleteUser {
     @NonNull
     String userId;

@@ -1,6 +1,7 @@
 package com.bitwarden.passwordless.error;
 
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 import java.util.Map;
@@ -10,10 +11,10 @@ import java.util.Map;
  *
  * @see <a href="https://docs.passwordless.dev/guide/errors.html#problem-details">Passwordless Docs Errors</a>
  */
-@Data
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@Value
 @AllArgsConstructor
 @Builder
+@Jacksonized
 public class PasswordlessProblemDetails {
     String type;
     String title;

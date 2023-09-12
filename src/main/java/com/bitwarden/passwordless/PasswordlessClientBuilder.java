@@ -39,7 +39,7 @@ import java.util.Objects;
  * @see PasswordlessOptions
  * @see PasswordlessClient
  */
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Getter(AccessLevel.PACKAGE)
 public class PasswordlessClientBuilder {
 
