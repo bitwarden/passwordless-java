@@ -70,17 +70,13 @@ import com.bitwarden.passwordless.model.*;
 import java.io.*;
 import java.util.*;
 
-import org.slf4j.*;
-
 public class PasswordlessJavaSdkExample {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(PasswordlessJavaSdkExample.class);
 
     private final PasswordlessClient client;
 
     // Constructor
 
-    public String getRegisterToken(String alias) {
+    public String getRegisterToken(String alias) throws PasswordlessApiException, IOException {
 
         // Get existing userid from session or create a new user.
         String userId = UUID.randomUUID().toString();
@@ -95,22 +91,10 @@ public class PasswordlessJavaSdkExample {
                 .aliases(Arrays.asList(alias))
                 .build();
 
-        try {
-            RegisteredToken response = client.registerToken(registerToken);
+        RegisteredToken response = client.registerToken(registerToken);
 
-            // return this token
-            return response.getToken();
-        } catch (PasswordlessApiException e) {
-            PasswordlessProblemDetails problemDetails = e.getProblemDetails();
-
-            LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
-
-            return null;
-        } catch (IOException e2) {
-            LOGGER.error("Get Register Token failed with unexpected error", e2);
-
-            return null;
-        }
+        // return this token
+        return response.getToken();
     }
 }
 ```
@@ -124,36 +108,20 @@ import com.bitwarden.passwordless.model.*;
 
 import java.io.*;
 
-import org.slf4j.*;
-
 public class PasswordlessJavaSdkExample {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(PasswordlessJavaSdkExample.class);
 
     private final PasswordlessClient client;
 
     // Constructor
 
-    public VerifiedUser verifySignInToken(String token) {
+    public VerifiedUser verifySignInToken(String token) throws PasswordlessApiException, IOException {
 
         VerifySignIn signInVerify = VerifySignIn.builder()
                 .token(token)
                 .build();
 
-        try {
-            // Sign the user in, set a cookie, etc,
-            return client.signIn(signInVerify);
-        } catch (PasswordlessApiException e) {
-            PasswordlessProblemDetails problemDetails = e.getProblemDetails();
-
-            LOGGER.warn("Get Register Token failed with problem details {}", problemDetails);
-
-            return null;
-        } catch (IOException e2) {
-            LOGGER.error("Get Register Token failed with unexpected error", e2);
-
-            return null;
-        }
+        // Sign the user in, set a cookie, etc,
+        return client.signIn(signInVerify);
     }
 }
 ```
