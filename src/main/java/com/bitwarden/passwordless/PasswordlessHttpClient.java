@@ -114,7 +114,7 @@ class PasswordlessHttpClient implements Closeable {
         }
 
         requestBuilder.setUri(uri);
-        requestBuilder.addHeader(new LogMaskingHeader("ApiSecret", passwordlessOptions.getApiPrivateKey()));
+        requestBuilder.addHeader(new LogMaskingHeader("ApiSecret", passwordlessOptions.getApiSecret()));
 
         if (payload != null) {
             byte[] requestBody = objectMapper.writeValueAsBytes(payload);

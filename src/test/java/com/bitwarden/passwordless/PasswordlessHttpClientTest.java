@@ -387,7 +387,7 @@ class PasswordlessHttpClientTest {
         assertThat(request.getHeaders()).hasSize(1);
         assertThat(request.getHeader("ApiSecret")).isNotNull()
                 .extracting(Header::getValue)
-                .isEqualTo(passwordlessOptions.getApiPrivateKey());
+                .isEqualTo(passwordlessOptions.getApiSecret());
         if (payloadJson != null) {
             assertThat(request.getEntity()).isNotNull();
             assertThat(EntityUtils.toString(request.getEntity())).isEqualTo(payloadJson);

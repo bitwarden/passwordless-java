@@ -24,7 +24,7 @@ import java.util.Objects;
  * <pre>
  * {@code
  * PasswordlessOptions passwordlessOptions = PasswordlessOptions.builder()
- *     .apiPrivateKey("...")
+ *     .apiSecret("...")
  *     .build();
  * PasswordlessClient passwordlessClient = PasswordlessClientBuilder.create(passwordlessOptions)
  *     .build();

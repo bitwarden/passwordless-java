@@ -43,7 +43,7 @@ public class PasswordlessJavaSdkExample implements Closeable {
 
     public PasswordlessClientExample() {
         PasswordlessOptions options = PasswordlessOptions.builder()
-                .apiPrivateKey("your_api_secret")
+                .apiSecret("your_api_secret")
                 .build();
 
         client = PasswordlessClientBuilder.create(options)
@@ -128,7 +128,7 @@ public class PasswordlessJavaSdkExample {
 
 ### Customization
 
-Customize `PasswordlessOptions` by providing `apiPrivateKey` with your Application's Private API Key.
+Customize `PasswordlessOptions` by providing `apiSecret` with your Application's Private API Key.
 You can also change the `apiUrl` if you prefer to self-host.
 
 Customize `PasswordlessClientBuilder` by providing `httpClient` [CloseableHttpClient][apache-http-client] instance

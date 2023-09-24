@@ -19,8 +19,8 @@ public class PasswordlessOptions {
     String apiUrl = "https://v4.passwordless.dev";
 
     /**
-     * Secret API key used to authenticate with the Passwordless API.
+     * Secret key used to authenticate with the Passwordless API.
      */
     @NonNull
-    final String apiPrivateKey;
+    final String apiSecret;
 }

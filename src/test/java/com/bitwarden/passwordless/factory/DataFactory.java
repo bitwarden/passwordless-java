@@ -18,7 +18,7 @@ public class DataFactory {
     public PasswordlessOptions passwordlessOptions(String url) {
         return PasswordlessOptions.builder()
                 .apiUrl(url)
-                .apiPrivateKey("javaapp:secret:34286d0b2cb24b8687d1639d20eb29fa")
+                .apiSecret("javaapp:secret:34286d0b2cb24b8687d1639d20eb29fa")
                 .build();
     }
 
