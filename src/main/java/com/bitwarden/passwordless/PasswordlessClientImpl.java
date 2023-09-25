@@ -22,7 +22,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
 
     @Override
     public void setAlias(SetAlias setAlias) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(setAlias, "createAlias cannot be null");
+        Objects.requireNonNull(setAlias, "setAlias cannot be null");
 
         ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("alias", setAlias);
 
