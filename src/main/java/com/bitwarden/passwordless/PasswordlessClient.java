@@ -21,12 +21,12 @@ public interface PasswordlessClient extends Closeable {
     /**
      * Creates or replaces existing aliases for a given user.
      *
-     * @param createAlias {@link CreateAlias} containing details about the aliases for a user.
+     * @param setAlias {@link SetAlias} containing details about the aliases for a user.
      * @throws PasswordlessApiException If the Passwordless Api responds with an error.
      * @throws IOException              If there's an IO-related issue.
-     * @see CreateAlias
+     * @see SetAlias
      */
-    void createAlias(CreateAlias createAlias)
+    void setAlias(SetAlias setAlias)
             throws PasswordlessApiException, IOException;
 
     /**

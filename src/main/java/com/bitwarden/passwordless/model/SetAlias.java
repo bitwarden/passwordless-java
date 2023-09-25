@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Jacksonized
-public class CreateAlias {
+public class SetAlias {
     @NonNull
     final String userId;
     @NonNull
