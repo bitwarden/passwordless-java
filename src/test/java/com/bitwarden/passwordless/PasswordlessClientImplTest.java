@@ -61,36 +61,36 @@ class PasswordlessClientImplTest {
     }
 
     @Test
-    void createAlias_requestNull_NPE() {
-        assertThatThrownBy(() -> passwordlessClient.createAlias(null))
+    void setAlias_requestNull_NPE() {
+        assertThatThrownBy(() -> passwordlessClient.setAlias(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining("createAlias");
+                .hasMessageContaining("setAlias");
     }
 
     @Test
-    void createAlias_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+    void setAlias_errorResponse_PasswordlessApiException() throws JsonProcessingException {
         PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
 
         wireMock.stubFor(post(urlEqualTo("/alias"))
                 .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
 
-        CreateAlias createAlias = DataFactory.createAlias();
+        SetAlias setAlias = DataFactory.setAlias();
 
         PasswordlessApiException passwordlessApiException = catchThrowableOfType(
-                () -> passwordlessClient.createAlias(createAlias), PasswordlessApiException.class);
+                () -> passwordlessClient.setAlias(setAlias), PasswordlessApiException.class);
 
         assertThat(passwordlessApiException).isNotNull();
         assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
     }
 
     @Test
-    void createAlias_validRequest_noError() throws PasswordlessApiException, IOException {
+    void setAlias_validRequest_noError() throws PasswordlessApiException, IOException {
         wireMock.stubFor(post(urlEqualTo("/alias"))
                 .willReturn(WireMock.ok()));
 
-        CreateAlias createAlias = DataFactory.createAlias();
+        SetAlias setAlias = DataFactory.setAlias();
 
-        passwordlessClient.createAlias(createAlias);
+        passwordlessClient.setAlias(setAlias);
     }
 
     @Test

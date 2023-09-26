@@ -45,8 +45,8 @@ public class DataFactory {
                 .build();
     }
 
-    public CreateAlias createAlias() {
-        return CreateAlias.builder()
+    public SetAlias setAlias() {
+        return SetAlias.builder()
                 .userId(USER_ID)
                 .aliases(Arrays.asList("TestUser1", "TestUser2"))
                 .build();
