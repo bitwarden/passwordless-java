@@ -20,8 +20,8 @@ jobs:
           server-password: MAVEN_PASSWORD
       - name: Verify Version from pom.xml
         run: |
-            # Extract the version from pom.xml
-            POM_VERSION=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
+            # Extract the version from pom.xml using grep
+            POM_VERSION=$(grep -oP '<version>\K[^<]+' pom.xml)
             
             # Get the release tag from the GitHub context
             RELEASE_TAG=${{ github.ref }}
