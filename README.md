@@ -18,7 +18,7 @@ The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java librar
 **Gradle**: add to the `dependencies` in *gradle.build* file:
 
 ```groovy
-implementation group: 'org.bitwarden', name: 'passwordless', version: '1.0.5'
+implementation group: 'com.bitwarden', name: 'passwordless', version: '1.0.5'
 ```
 
 ### Dependencies
