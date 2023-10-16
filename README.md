@@ -136,13 +136,11 @@ and `objectMapper` [ObjectMapper][fasterxml-jackson-databind].
 
 ### Examples
 
-See [Passwordless Java Example](https://github.com/passwordless/passwordless-java-example) for Spring Boot 3 application
-using this library.
+See [Passwordless Example](examples/spring-boot-3-jdk-17) for Spring Boot 3 application using Java 17 runtime.
 
 ## Documentation
 
-For a comprehensive list of examples, check out the [API
-documentation][api-docs].
+For a comprehensive list of examples, check out the [API documentation][api-docs].
 
 ## Contributing
 
