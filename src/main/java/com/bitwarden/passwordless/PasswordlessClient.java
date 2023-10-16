@@ -56,7 +56,7 @@ public interface PasswordlessClient extends Closeable {
     /**
      * Attempts to delete a credential.
      *
-     * @param deleteCredential {@link PasswordlessApiException} containing details about the credential id to be
+     * @param deleteCredential {@link DeleteCredential} containing details about the credential id to be
      *                         deleted.
      * @throws PasswordlessApiException If the Passwordless Api responds with an error.
      * @throws IOException              If there's an IO-related issue.
