@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bitwarden</groupId>
     <artifactId>passwordless</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <name>passwordless</name>
     <description>Passwordless.dev Java SDK</description>
     <packaging>jar</packaging>
@@ -18,7 +18,7 @@
 
     <scm>
         <url>https://github.com/passwordless/passwordless-java</url>
-        <connection>scm:git:https://github.com/passwordless/passwordless-java.git</connection>
+        <connection>scm:git:git@github.com:passwordless/passwordless-java.git</connection>
         <developerConnection>scm:git:git@github.com:passwordless/passwordless-java.git</developerConnection>
     </scm>
 
