@@ -11,14 +11,14 @@ The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java librar
 <dependency>
     <groupId>com.bitwarden</groupId>
     <artifactId>passwordless</artifactId>
-    <version>1.0.7</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 **Gradle**: add to the `dependencies` in *gradle.build* file:
 
 ```groovy
-implementation group: 'com.bitwarden', name: 'passwordless', version: '1.0.7'
+implementation group: 'com.bitwarden', name: 'passwordless', version: '1.1.0'
 ```
 
 ### Dependencies
