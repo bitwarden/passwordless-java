@@ -1,3 +1,7 @@
+![CI](https://github.com/bitwarden/passwordless-java/actions/workflows/ci.yml/badge.svg)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitwarden/passwordless.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.bitwarden%22%20AND%20a:%22passwordless%22)
+
+
 # Passwordless Java SDK
 
 The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 8+ runtime.
