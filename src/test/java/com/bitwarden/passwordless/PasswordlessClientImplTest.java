@@ -371,6 +371,39 @@ class PasswordlessClientImplTest {
     }
 
     @Test
+    void sendMagicLink_validRequest_validResponse() throws PasswordlessApiException, IOException {
+        wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
+                .willReturn(WireMock.ok()));
+
+        SendMagicLinkRequest request = DataFactory.sendMagicLinkRequest();
+
+        passwordlessClient.sendMagicLink(request);
+    }
+
+    @Test
+    void sendMagicLink_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        SendMagicLinkRequest request = DataFactory.sendMagicLinkRequest();
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.sendMagicLink(request), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
+    }
+
+    @Test
+    void sendMagicLink_requestNull_NPE() {
+        assertThatThrownBy(() -> passwordlessClient.sendMagicLink(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("magicLink");
+    }
+
+    @Test
     void close_closing_httpClientClosed() throws IOException {
         passwordlessClient.close();
 

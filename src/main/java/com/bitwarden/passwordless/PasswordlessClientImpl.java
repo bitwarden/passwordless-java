@@ -107,6 +107,15 @@ class PasswordlessClientImpl implements PasswordlessClient {
     }
 
     @Override
+    public void sendMagicLink(SendMagicLinkRequest magicLink) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(magicLink, "magicLink cannot be null");
+
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("magic-link/send", magicLink);
+
+        passwordlessHttpClient.sendRequest(request, null);
+    }
+
+    @Override
     public void close() throws IOException {
         passwordlessHttpClient.close();
     }

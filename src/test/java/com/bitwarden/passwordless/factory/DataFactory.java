@@ -198,4 +198,12 @@ public class DataFactory {
                 .userId(USER_ID)
                 .build();
     }
+
+    public SendMagicLinkRequest sendMagicLinkRequest() {
+        return SendMagicLinkRequest.builder()
+                .userId(USER_ID)
+                .emailAddress("support@paswordless.dev")
+                .urlTemplate("https://www.example.com?token=$TOKEN")
+                .build();
+    }
 }
