@@ -132,7 +132,7 @@ public interface PasswordlessClient extends Closeable {
      * @param magicLink {@link SendMagicLinkRequest} containing details about the magic link to send.
      * @throws PasswordlessApiException If the Passwordless Api responds with an error.
      * @throws IOException              If there's an IO-related issue.
-     * @see DeleteUser
+     * @see SendMagicLinkRequest
      */
     void sendMagicLink(SendMagicLinkRequest magicLink)
             throws PasswordlessApiException, IOException;
