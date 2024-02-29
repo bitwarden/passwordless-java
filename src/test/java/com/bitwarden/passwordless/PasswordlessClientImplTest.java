@@ -375,7 +375,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
                 .willReturn(WireMock.ok()));
 
-        SendMagicLinkRequest request = DataFactory.sendMagicLinkRequest();
+        SendMagicLinkOptions request = DataFactory.sendMagicLinkRequest();
 
         passwordlessClient.sendMagicLink(request);
     }
@@ -387,7 +387,7 @@ class PasswordlessClientImplTest {
         wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
                 .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
 
-        SendMagicLinkRequest request = DataFactory.sendMagicLinkRequest();
+        SendMagicLinkOptions request = DataFactory.sendMagicLinkRequest();
 
         PasswordlessApiException passwordlessApiException = catchThrowableOfType(
                 () -> passwordlessClient.sendMagicLink(request), PasswordlessApiException.class);
@@ -400,7 +400,44 @@ class PasswordlessClientImplTest {
     void sendMagicLink_requestNull_NPE() {
         assertThatThrownBy(() -> passwordlessClient.sendMagicLink(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining("magicLink");
+                .hasMessageContaining("options");
+    }
+
+    @Test
+    void generateAuthenticationToken_requestNull_NPE() {
+        assertThatThrownBy(() -> passwordlessClient.generateAuthenticationToken(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("options");
+    }
+
+    @Test
+    void generateAuthenticationToken_errorResponse_PasswordlessApiException() throws JsonProcessingException {
+        PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
+
+        wireMock.stubFor(post(urlEqualTo("/signin/generate-token"))
+                .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
+
+        GenerateAuthenticationTokenOptions options = DataFactory.generateAuthenticationTokenOptions();
+
+        PasswordlessApiException passwordlessApiException = catchThrowableOfType(
+                () -> passwordlessClient.generateAuthenticationToken(options), PasswordlessApiException.class);
+
+        assertThat(passwordlessApiException).isNotNull();
+        assertThat(passwordlessApiException.getProblemDetails()).isEqualTo(problemDetails);
+    }
+
+    @Test
+    void generateAuthenticationToken_validRequest_validResponse() throws IOException, PasswordlessApiException {
+        GenerateAuthenticationTokenOptions options = DataFactory.generateAuthenticationTokenOptions();
+
+        GeneratedAuthenticationToken expected = DataFactory.generatedAuthenticationToken();
+
+        wireMock.stubFor(post(urlEqualTo("/signin/generate-token"))
+                .willReturn(WireMock.ok().withResponseBody(wireMockUtils.createJsonBody(expected))));
+
+        GeneratedAuthenticationToken actual = passwordlessClient.generateAuthenticationToken(options);
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

@@ -129,12 +129,23 @@ public interface PasswordlessClient extends Closeable {
     /**
      * Sends a magic link.
      *
-     * @param magicLink {@link SendMagicLinkRequest} containing details about the magic link to send.
+     * @param options {@link SendMagicLinkOptions} containing details about the magic link to send.
      * @throws PasswordlessApiException If the Passwordless Api responds with an error.
      * @throws IOException              If there's an IO-related issue.
-     * @see SendMagicLinkRequest
+     * @see SendMagicLinkOptions
      */
-    void sendMagicLink(SendMagicLinkRequest magicLink)
+    void sendMagicLink(SendMagicLinkOptions options)
+            throws PasswordlessApiException, IOException;
+
+    /**
+     * Can be used to implement a "magic link"-style login and other similar scenarios..
+     *
+     * @param options {@link GenerateAuthenticationTokenOptions} containing details about the authentication token.
+     * @throws PasswordlessApiException If the Passwordless Api responds with an error.
+     * @throws IOException              If there's an IO-related issue.
+     * @see SendMagicLinkOptions
+     */
+    GeneratedAuthenticationToken generateAuthenticationToken(GenerateAuthenticationTokenOptions options)
             throws PasswordlessApiException, IOException;
 
     /**

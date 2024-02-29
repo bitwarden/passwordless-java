@@ -107,12 +107,23 @@ class PasswordlessClientImpl implements PasswordlessClient {
     }
 
     @Override
-    public void sendMagicLink(SendMagicLinkRequest magicLink) throws PasswordlessApiException, IOException {
-        Objects.requireNonNull(magicLink, "magicLink cannot be null");
+    public void sendMagicLink(SendMagicLinkOptions options) throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(options, "options cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("magic-link/send", magicLink);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("magic-link/send", options);
 
         passwordlessHttpClient.sendRequest(request, null);
+    }
+
+    @Override
+    public GeneratedAuthenticationToken generateAuthenticationToken(GenerateAuthenticationTokenOptions options)
+            throws PasswordlessApiException, IOException {
+        Objects.requireNonNull(options, "options cannot be null");
+
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("signin/generate-token", options);
+
+        return passwordlessHttpClient.sendRequest(request, new TypeReference<GeneratedAuthenticationToken>() {
+        });
     }
 
     @Override
