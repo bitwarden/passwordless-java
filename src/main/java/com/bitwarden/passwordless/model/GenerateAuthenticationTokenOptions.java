@@ -10,13 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @RequiredArgsConstructor
 @Builder
 @Jacksonized
-public class SendMagicLinkRequest {
-    @NonNull
-    String emailAddress;
-
-    @NonNull
-    String urlTemplate;
-
+public class GenerateAuthenticationTokenOptions {
     @NonNull
     String userId;
 
