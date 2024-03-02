@@ -141,9 +141,11 @@ public interface PasswordlessClient extends Closeable {
      * Can be used to implement a "magic link"-style login and other similar scenarios..
      *
      * @param options {@link GenerateAuthenticationTokenOptions} containing details about the authentication token.
+     * @return {@link GeneratedAuthenticationToken User token details} upon successful generation of the token.
      * @throws PasswordlessApiException If the Passwordless Api responds with an error.
      * @throws IOException              If there's an IO-related issue.
-     * @see SendMagicLinkOptions
+     * @see GenerateAuthenticationTokenOptions
+     * @see GeneratedAuthenticationToken
      */
     GeneratedAuthenticationToken generateAuthenticationToken(GenerateAuthenticationTokenOptions options)
             throws PasswordlessApiException, IOException;

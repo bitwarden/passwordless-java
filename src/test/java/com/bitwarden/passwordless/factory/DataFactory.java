@@ -215,7 +215,7 @@ public class DataFactory {
 
     public GeneratedAuthenticationToken generatedAuthenticationToken() {
         return GeneratedAuthenticationToken.builder()
-                .token("verify_k8QgiPlgfMVr34FyFipBrkj6jBwKT9QifsFx-DSa1L3Yp_PE1NwAE9f_ppPH0GT80Y_ZJDBlZGQ2NWJjLTliOGQtNGIxYS1iMjA4LTIxYzZjOGYxYWQ5NK5wYXNza2V5X3NpZ25pbsDAwMDAwMDZJGViNGRlZTA3LTJkMDUtNDA0ZS04MGVkLTBmNjVkMGM0ZTMwZdf_ppOx8GT80RepbG9jYWxob3N0tWh0dHA6Ly9sb2NhbGhvc3Q6ODA4MMOzQ2hyb21lLCBNYWMgT1MgWCAxMKJQTMDEIGbZgozerTjDOV_ysX2AKQByPuZ-guCkcvWDHjKnzY4_zhU3BlI")
+                .token("verify_123")
                 .build();
     }
 }
