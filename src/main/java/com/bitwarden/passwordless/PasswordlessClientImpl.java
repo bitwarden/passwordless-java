@@ -110,7 +110,7 @@ class PasswordlessClientImpl implements PasswordlessClient {
     public void sendMagicLink(SendMagicLinkOptions options) throws PasswordlessApiException, IOException {
         Objects.requireNonNull(options, "options cannot be null");
 
-        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("magic-link/send", options);
+        ClassicHttpRequest request = passwordlessHttpClient.createPostRequest("magic-links/send", options);
 
         passwordlessHttpClient.sendRequest(request, null);
     }

@@ -372,7 +372,7 @@ class PasswordlessClientImplTest {
 
     @Test
     void sendMagicLink_validRequest_validResponse() throws PasswordlessApiException, IOException {
-        wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
+        wireMock.stubFor(post(urlEqualTo("/magic-links/send"))
                 .willReturn(WireMock.ok()));
 
         SendMagicLinkOptions request = DataFactory.sendMagicLinkRequest();
@@ -384,7 +384,7 @@ class PasswordlessClientImplTest {
     void sendMagicLink_errorResponse_PasswordlessApiException() throws JsonProcessingException {
         PasswordlessProblemDetails problemDetails = DataFactory.passwordlessProblemDetailsInvalidToken();
 
-        wireMock.stubFor(post(urlEqualTo("/magic-link/send"))
+        wireMock.stubFor(post(urlEqualTo("/magic-links/send"))
                 .willReturn(wireMockUtils.createProblemDetailsResponse(problemDetails)));
 
         SendMagicLinkOptions request = DataFactory.sendMagicLinkRequest();
