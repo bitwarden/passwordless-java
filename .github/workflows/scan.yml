@@ -76,3 +76,5 @@ jobs:
           args: >
             -Dsonar.organization=${{ github.repository_owner }}
             -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
+            -Dsonar.sources=src/
+            -Dsonar.tests=src/test/,examples/spring-boot-3-jdk-17/
