@@ -69,7 +69,8 @@ jobs:
         with:
           java-version: 17
           distribution: "temurin"
-      - name: Build and Analyze
+
+      - name: Scan with SonarCloud
         env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn verify sonar:sonar
