@@ -75,7 +75,4 @@ jobs:
         env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn verify sonar:sonar
-              -Dsonar.organization=${{ github.repository_owner }}
-              -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
-              -Dsonar.sources=src/,examples/
-              -Dsonar.tests=src/test/
+

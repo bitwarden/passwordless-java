@@ -47,6 +47,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.organization>bitwarden</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.sources>src/,examples/</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
         <sonar.projectKey>bitwarden_passwordless-java</sonar.projectKey>
     </properties>
 
