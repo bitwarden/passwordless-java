@@ -75,4 +75,3 @@ jobs:
         env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean install -Dgpg.skip=true sonar:sonar
-
