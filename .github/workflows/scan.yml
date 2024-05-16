@@ -26,12 +26,12 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           ref: ${{  github.event.pull_request.head.sha }}
 
       - name: Scan with Checkmarx
-        uses: checkmarx/ast-github-action@dd0f9365942f29a99c3be5bdb308958ede8f906b # 2.0.25
+        uses: checkmarx/ast-github-action@63eb282be21ed73d70656edd2204b8d4cbbe5795 # 2.0.27
         env:
           INCREMENTAL: "${{ contains(github.event_name, 'pull_request') && '--sast-incremental' || '' }}"
         with:
@@ -46,7 +46,7 @@ jobs:
             --output-path . ${{ env.INCREMENTAL }}
 
       - name: Upload Checkmarx results to GitHub
-        uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
+        uses: github/codeql-action/upload-sarif@b7cec7526559c32f1616476ff32d17ba4c59b2d6 # v3.25.5
         with:
           sarif_file: cx_result.sarif
 
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           fetch-depth: 0
           ref: ${{  github.event.pull_request.head.sha }}
