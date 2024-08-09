@@ -1,7 +1,22 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>bitwarden/renovate-config"],
+  "enabledManagers": ["github-actions", "maven", "maven-wrapper"],
   "packageRules": [
+    {
+      "groupName": "gh minor",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "groupName": "maven minor",
+      "matchManagers": ["maven"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "groupName": "maven-wrapper minor",
+      "matchManagers": ["maven-wrapper"],
+    },
     {
       "matchPackageNames": ["ch.qos.logback:logback-classic"],
       "allowedVersions": "<=1.3.x",
