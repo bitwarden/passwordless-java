@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bitwarden</groupId>
     <artifactId>passwordless</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <name>passwordless</name>
     <description>Passwordless.dev Java SDK</description>
     <packaging>jar</packaging>
