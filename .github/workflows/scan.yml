@@ -14,7 +14,9 @@ on:
   pull_request_target:
     types: [opened, synchronize, reopened]
     branches:
-      - main
+      - "main"
+
+permissions: {}
 
 jobs:
   check-run:
