@@ -59,7 +59,7 @@ jobs:
         uses: bitwarden/gh-actions/azure-logout@main
 
       - name: Scan with Checkmarx
-        uses: checkmarx/ast-github-action@629a9fac14369bf2898d583b22bf8c40a5caf8e9 # 2.0.40
+        uses: checkmarx/ast-github-action@9fda4ab4c1b67c35de380552a972a82997d97731 # 2.0.42
         env:
           INCREMENTAL: "${{ contains(github.event_name, 'pull_request') && '--sast-incremental' || '' }}"
         with:
@@ -74,7 +74,7 @@ jobs:
             --output-path . ${{ env.INCREMENTAL }}
 
       - name: Upload Checkmarx results to GitHub
-        uses: github/codeql-action/upload-sarif@48ab28a6f5dbc2a99bf1e0131198dd8f1df78169 # v3.28.0
+        uses: github/codeql-action/upload-sarif@dd746615b3b9d728a6a37ca2045b68ca76d4841a # v3.28.8
         with:
           sarif_file: cx_result.sarif
           sha: ${{ contains(github.event_name, 'pull_request') && github.event.pull_request.head.sha || github.sha }}
@@ -97,7 +97,7 @@ jobs:
           ref: ${{  github.event.pull_request.head.sha }}
       
       - name: Set up Java
-        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           java-version: 17
           distribution: "temurin"
