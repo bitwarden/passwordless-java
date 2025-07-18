@@ -9,6 +9,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
     steps:
       - name: Check out repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -48,11 +49,28 @@ jobs:
             exit 1
           fi
 
+      - name: Log in to Azure
+        uses: bitwarden/gh-actions/azure-login@main
+        with:
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+
+      - name: Get Azure Key Vault secrets
+        id: get-kv-secrets
+        uses: bitwarden/gh-actions/get-keyvault-secrets@main
+        with:
+          keyvault: gh-passwordless-java
+          secrets: "GPG-KEY,GPG-PASSPHRASE,OSSRH-USERNAME,OSSRH-TOKEN"
+
+      - name: Log out from Azure
+        uses: bitwarden/gh-actions/azure-logout@main
+
       - id: install-secret-key
         name: Import GPG Secret Key
         run: |
           # Install gpg secret key
-          cat <(echo -e "${{ secrets.GPG_KEY }}") | gpg --batch --import
+          cat <(echo -e "${{ steps.get-kv-secrets.outputs.GPG-KEY }}") | gpg --batch --import
           
           # Verify gpg secret key
           gpg --list-secret-keys --keyid-format LONG
@@ -62,8 +80,8 @@ jobs:
           mvn \
             --batch-mode \
             -Dmaven.test.skip \
-            -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            -Dgpg.passphrase=${{ steps.get-kv-secrets.outputs.GPG-PASSPHRASE }} \
             clean deploy
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_USERNAME: ${{ steps.get-kv-secrets.outputs.OSSRH-USERNAME }}
+          MAVEN_PASSWORD: ${{ steps.get-kv-secrets.outputs.OSSRH-TOKEN }}
