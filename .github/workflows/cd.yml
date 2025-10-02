@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Set up Java for publishing to Maven Central Repository
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
@@ -34,7 +36,7 @@ jobs:
           POM_VERSION=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
   
           # Get the release tag from the GitHub context
-          RELEASE_TAG=${{ github.ref }}
+          RELEASE_TAG=${GITHUB_REF}
           
           # Remove "refs/tags/" from the release tag
           RELEASE_TAG=${RELEASE_TAG/refs\/tags\//}
@@ -68,10 +70,12 @@ jobs:
 
       - id: install-secret-key
         name: Import GPG Secret Key
+        env:
+          GPG_KEY: ${{ steps.get-kv-secrets.outputs.GPG-KEY }}
         run: |
           # Install gpg secret key
-          cat <(echo -e "${{ steps.get-kv-secrets.outputs.GPG-KEY }}") | gpg --batch --import
-          
+          cat <(echo -e "${GPG_KEY}") | gpg --batch --import
+
           # Verify gpg secret key
           gpg --list-secret-keys --keyid-format LONG
 
@@ -80,8 +84,9 @@ jobs:
           mvn \
             --batch-mode \
             -Dmaven.test.skip \
-            -Dgpg.passphrase=${{ steps.get-kv-secrets.outputs.GPG-PASSPHRASE }} \
+            -Dgpg.passphrase="${GPG_PASSPHRASE}" \
             clean deploy
         env:
           MAVEN_USERNAME: ${{ steps.get-kv-secrets.outputs.OSSRH-USERNAME }}
           MAVEN_PASSWORD: ${{ steps.get-kv-secrets.outputs.OSSRH-TOKEN }}
+          GPG_PASSPHRASE: ${{ steps.get-kv-secrets.outputs.GPG-PASSPHRASE }}
