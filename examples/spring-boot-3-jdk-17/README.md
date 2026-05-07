@@ -25,4 +25,4 @@ JDK 17 or newer is required to run the application.
 6. For all Passwordless API functionalities supported by Java SDK, navigate to http://localhost:8080/swagger-ui/index.html
 7. See [Example Passwordless REST Api requests and responses](example-rest-requests/passwordless-api.http)
 
-[passwordless-java-sdk]:https://github.com/passwordless/passwordless-java-
+[passwordless-java-sdk]:https://github.com/passwordless/passwordless-java

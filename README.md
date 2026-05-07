@@ -4,7 +4,7 @@
 
 # Passwordless Java SDK
 
-The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 8+ runtime.
+The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 17+ runtime.
 
 ## Installation
 
@@ -148,12 +148,9 @@ For a comprehensive list of examples, check out the [API documentation][api-docs
 
 ## Contributing
 
-This library compiles to Java 8 compatible runtime and requires minimum JDK 8 installed.
+This library compiles to a Java 17 compatible runtime and requires JDK 17 or newer installed. Tested up to JDK 25.
 
-Newer JDK are still backwards compatible to version 8, so you are free to use any of the JDK version - tested up to
-version 20.
-
-Download and install [JDK 8](https://adoptium.net/temurin/releases/?version=8) if you do not have compatible JDK.
+Download and install [JDK 17](https://adoptium.net/temurin/releases/?version=17) if you do not have a compatible JDK.
 
 The `JAVA_HOME` environment variable needs to contain installed JDK path.
 
