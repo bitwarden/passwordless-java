@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bitwarden</groupId>
     <artifactId>passwordless</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <name>passwordless</name>
     <description>Passwordless.dev Java SDK</description>
     <packaging>jar</packaging>
@@ -43,7 +43,8 @@
     </developers>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>8</java.version>
+        <lombok.version>1.18.38</lombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.organization>bitwarden</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -102,7 +103,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <!--		<dependency>-->
@@ -156,11 +157,16 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <source>${java.version}</source>
-                    <source>${java.version}</source>
+                    <release>${java.version}</release>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
