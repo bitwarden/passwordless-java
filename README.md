@@ -4,7 +4,7 @@
 
 # Passwordless Java SDK
 
-The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 17+ runtime.
+The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java library, for Java 8+ runtime.
 
 ## Installation
 
@@ -15,14 +15,14 @@ The official [Bitwarden Passwordless.dev](https://passwordless.dev/) Java librar
 <dependency>
     <groupId>com.bitwarden</groupId>
     <artifactId>passwordless</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 
 **Gradle**: add to the `dependencies` in *gradle.build* file:
 
 ```groovy
-implementation group: 'com.bitwarden', name: 'passwordless', version: '1.2.3'
+implementation group: 'com.bitwarden', name: 'passwordless', version: '1.2.4'
 ```
 
 ### Dependencies
@@ -148,9 +148,9 @@ For a comprehensive list of examples, check out the [API documentation][api-docs
 
 ## Contributing
 
-This library compiles to a Java 17 compatible runtime and requires JDK 17 or newer installed. Tested up to JDK 25.
+This library compiles to a Java 8 compatible runtime and requires JDK 8 or newer installed. Tested up to JDK 25.
 
-Download and install [JDK 17](https://adoptium.net/temurin/releases/?version=17) if you do not have a compatible JDK.
+Download and install [JDK 8](https://adoptium.net/temurin/releases/?version=8) if you do not have a compatible JDK.
 
 The `JAVA_HOME` environment variable needs to contain installed JDK path.
 
