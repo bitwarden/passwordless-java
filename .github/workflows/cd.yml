@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Java for publishing to Maven Central Repository
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           java-version: '8'
           distribution: 'temurin'
