@@ -1,92 +1,23 @@
 name: Release
 on:
   release:
-    types: [created]
+    types: [published]
+
+permissions: {}
+
 jobs:
-  publish:
-    name: Publish
-    runs-on: ubuntu-22.04
+  trigger-publish:
+    name: Trigger Publish in Deploy Repo
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
       id-token: write
+      deployments: write
     steps:
-      - name: Check out repo
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Trigger passwordless-java publish
+        uses: bitwarden/gh-actions/trigger-actions@main
         with:
-          persist-credentials: false
-
-      - name: Set up Java for publishing to Maven Central Repository
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-
-      - name: Install xmllint
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y libxml2-utils
-
-      - name: Verify Version from pom.xml
-        run: |
-          # Extract the version from pom.xml using grep
-          POM_VERSION=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
-  
-          # Get the release tag from the GitHub context
-          RELEASE_TAG=${GITHUB_REF}
-          
-          # Remove "refs/tags/" from the release tag
-          RELEASE_TAG=${RELEASE_TAG/refs\/tags\//}
-        
-          # Remove the 'v' prefix fro the release tag, if present
-          RELEASE_TAG=${RELEASE_TAG#v}            
-          
-          if [ "$POM_VERSION" == "$RELEASE_TAG" ]; then
-            echo "Version in pom.xml matches the release tag: $RELEASE_TAG"
-          else
-            echo "Error: Version in pom.xml ($POM_VERSION) does not match the release tag ($RELEASE_TAG)"
-            exit 1
-          fi
-
-      - name: Log in to Azure
-        uses: bitwarden/gh-actions/azure-login@main
-        with:
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-
-      - name: Get Azure Key Vault secrets
-        id: get-kv-secrets
-        uses: bitwarden/gh-actions/get-keyvault-secrets@main
-        with:
-          keyvault: gh-passwordless-java
-          secrets: "GPG-KEY,GPG-PASSPHRASE,OSSRH-USERNAME,OSSRH-TOKEN"
-
-      - name: Log out from Azure
-        uses: bitwarden/gh-actions/azure-logout@main
-
-      - id: install-secret-key
-        name: Import GPG Secret Key
-        env:
-          GPG_KEY: ${{ steps.get-kv-secrets.outputs.GPG-KEY }}
-        run: |
-          # Install gpg secret key
-          cat <(echo -e "${GPG_KEY}") | gpg --batch --import
-
-          # Verify gpg secret key
-          gpg --list-secret-keys --keyid-format LONG
-
-      - name: Publish to the Maven Central Repository
-        run: |
-          mvn \
-            --batch-mode \
-            -Dmaven.test.skip \
-            -Dgpg.passphrase="${GPG_PASSPHRASE}" \
-            clean deploy
-        env:
-          MAVEN_USERNAME: ${{ steps.get-kv-secrets.outputs.OSSRH-USERNAME }}
-          MAVEN_PASSWORD: ${{ steps.get-kv-secrets.outputs.OSSRH-TOKEN }}
-          GPG_PASSPHRASE: ${{ steps.get-kv-secrets.outputs.GPG-PASSPHRASE }}
+          repo: bitwarden/deploy
+          deployment-task: publish-passwordless-java
+          deployment-environment: passwordless-java-publish
+          tag: ${{ github.event.release.tag_name }}
