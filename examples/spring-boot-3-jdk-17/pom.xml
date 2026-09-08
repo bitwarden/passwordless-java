@@ -19,6 +19,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <lombok.version>1.18.38</lombok.version>
+        <!-- Override the parent's managed Jackson version: 3.5.16 pins jackson-bom 2.21.4,
+             which carries 2 medium CVEs fixed in 2.21.5. -->
+        <jackson-bom.version>2.22.2</jackson-bom.version>
     </properties>
 
     <dependencies>
