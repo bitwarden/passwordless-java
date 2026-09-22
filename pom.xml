@@ -54,10 +54,15 @@
     </properties>
 
     <distributionManagement>
+        <!-- OSSRH (s01.oss.sonatype.org) reached end-of-life on 2025-06-30 and no longer
+             accepts deployments. This is the Central Portal's OSSRH Staging API compatibility
+             service, which speaks the same Nexus 2 API, so the server id and the maven-gpg /
+             maven-source / maven-javadoc plugin config above are unchanged. Credentials are a
+             Central Portal user token, not the old OSSRH account. -->
         <repository>
             <id>ossrh</id>
-            <name>Central Repository OSSRH</name>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <name>Central Portal (OSSRH compatibility)</name>
+            <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
