@@ -31,14 +31,9 @@
         <developer>
             <id>Wacix</id>
             <name>Maciej Zieniuk</name>
-            <url>https://github.com/WaciX</url>
-        </developer>
-        <developer>
-            <id>jonashendrickx</id>
-            <name>Jonas Hendrickx</name>
             <organization>Bitwarden Inc.</organization>
             <organizationUrl>https://github.com/bitwarden</organizationUrl>
-            <email>jhendrickx@bitwarden.com</email>
+            <url>https://github.com/WaciX</url>
         </developer>
     </developers>
 
