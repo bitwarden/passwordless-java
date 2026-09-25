@@ -31,14 +31,9 @@
         <developer>
             <id>Wacix</id>
             <name>Maciej Zieniuk</name>
-            <url>https://github.com/WaciX</url>
-        </developer>
-        <developer>
-            <id>jonashendrickx</id>
-            <name>Jonas Hendrickx</name>
             <organization>Bitwarden Inc.</organization>
             <organizationUrl>https://github.com/bitwarden</organizationUrl>
-            <email>jhendrickx@bitwarden.com</email>
+            <url>https://github.com/WaciX</url>
         </developer>
     </developers>
 
@@ -56,8 +51,8 @@
     <distributionManagement>
         <repository>
             <id>ossrh</id>
-            <name>Central Repository OSSRH</name>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <name>Central Portal (OSSRH compatibility)</name>
+            <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
